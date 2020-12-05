@@ -20,6 +20,11 @@ bool is_password_valid(char given_char, int lower, int upper, string password) {
     return num_matches >= lower; // Return if we have at least the minimum number of matches
 }
 
+bool is_password_valid_part_2(char given_char, int lower, int upper, string password) {
+    // XOR whether or not the char is present in each location (1 indexed, hence the subtraction)
+    return (password.at(lower - 1) == given_char) != (password.at(upper - 1) == given_char);
+}
+
 
 int main() {
     ifstream f;// Open reader
@@ -59,7 +64,7 @@ int main() {
 
         character = char_str[0]; // Extract the char (ignore the ':')
 
-        num_valid += is_password_valid(character, min, max, pass);
+        num_valid += is_password_valid_part_2(character, min, max, pass);
     }
 
     cout << num_valid << endl;
