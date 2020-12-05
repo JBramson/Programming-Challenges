@@ -45,3 +45,17 @@
 # End of https://www.toptal.com/developers/gitignore/api/vscode
 
 input.txt
+
+### This is a cool hack from VenomVendor https://stackoverflow.com/questions/5711120/gitignore-binary-files-that-have-no-extension
+# to ignore files without extensions
+
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# Unignore all dirs
+!*/
+
+### Above combination will ignore all files without extension ###
