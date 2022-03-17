@@ -60,4 +60,23 @@
 
 input.txt
 
+# C# Rider files
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/.idea.AdventOfCode2021.iml
+/projectSettingsUpdater.xml
+/contentModel.xml
+/modules.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
+# C# Rider stuff (custom)
+AdventOfCode2021/.idea/
+AdventOfCode2021/AdventOfCode2021.sln
+
 
