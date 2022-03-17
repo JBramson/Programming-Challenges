@@ -6,9 +6,9 @@
  */
 namespace AdventOfCode2021;
 
-public class Day_2
+public class Day1Part2
 {
-	static void Main(string[] args)
+	static void Old_Main(string[] args)
 	{
 		IEnumerable<string> numberStrings = System.IO.File.ReadLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
 		List<int> depths = new List<int>();
