@@ -78,5 +78,8 @@ input.txt
 # C# Rider stuff (custom)
 AdventOfCode2021/.idea/
 AdventOfCode2021/AdventOfCode2021.sln
-
+AdventOfCode2021/AdventOfCode2021/bin
+AdventOfCode2021/AdventOfCode2021/obj
+AdventOfCode2021/AdventOfCode2021/AdventOfCode2021.csproj
+AdventOfCode2021/AdventOfCode2021/bin/input.txt
 
