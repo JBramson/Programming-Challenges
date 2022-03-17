@@ -6,7 +6,7 @@
 namespace AdventOfCode2021;
 public class Day1
 {
-	static void Old_Main(string[] args)
+	static void OldMain(string[] args)
 	{
 		
 		IEnumerable<string> numberStrings = System.IO.File.ReadLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");

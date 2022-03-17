@@ -1,17 +1,17 @@
 /*
  * https://adventofcode.com/2021/day/2
- * Objective: Given a series of movements, calculate the final position,
+ * Objective: Given a series of movements and re-orientations, calculate the final position,
  * multiplying the depth by the horizontal position.
  * Part of me learning C#.
  */
 namespace AdventOfCode2021;
 
-public class Day2
+public class Day2Part2
 {
-	static void OldMain()
+	static void Main()
 	{
 		IEnumerable<string> movements = System.IO.File.ReadLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
-		int depth = 0, horizontalPos = 0, magnitude;
+		int depth = 0, horizontalPos = 0, aim = 0, magnitude;
 		string[] movementArray;
 		string direction;
 
@@ -25,12 +25,13 @@ public class Day2
 			{
 				case "forward":
 					horizontalPos += magnitude;
+					depth += aim * magnitude;
 					break;
 				case "down":
-					depth += magnitude;
+					aim += magnitude;
 					break;
 				case "up":
-					depth -= magnitude;
+					aim -= magnitude;
 					break;
 			}
 		}
