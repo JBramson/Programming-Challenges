@@ -8,7 +8,7 @@ namespace AdventOfCode2021;
 
 public class Day2Part2
 {
-	static void Main()
+	static void OldMain()
 	{
 		IEnumerable<string> movements = System.IO.File.ReadLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
 		int depth = 0, horizontalPos = 0, aim = 0, magnitude;
