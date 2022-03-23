@@ -1,26 +1,32 @@
 /*
  * https://adventofcode.com/2021/day/3
- * Objective: Given a series of bingo rolls and cards, find the score of the winning board.
+ * Objective: Given a series of bingo rolls and cards, find the score of the LAST winning board.
  * Diagonals do not count.
  * Part of me learning C#.
  */
 namespace AdventOfCode2021;
 
-public class Card
+public class LosingCard
 {
+	private static int _remainingBingos = 0;
 	int[ , ] numbers; // Holds this card's numbers
-	bool[ , ] markedZones; // Holds this card's numbers (false [unmarked] by default)
-	public Card(int[,] _numbers)
+	bool[ , ] markedZones = new bool[5, 5]; // Holds this card's numbers (false [unmarked] by default)
+	private bool hasBingo = false;
+	public LosingCard(int[,] _numbers)
 	{
 		// I learned the hard way that _number is just a reference and would assign as such,
 		// causing all cards to be overridden every time a new numbers[,] array was created.
 		// For this reason, we make a shallow copy (clone) of the 2D array.
 		numbers = (int[,]?)_numbers.Clone();
-		markedZones = new bool[5, 5];
+		_remainingBingos++;
 	}
 
 	public void MarkCard(int calledNum)
 	{
+		if (hasBingo)
+		{
+			return;
+		}
 		for (int i = 0; i < 5; i++)
 		{
 			for (int j = 0; j < 5; j++)
@@ -31,7 +37,12 @@ public class Card
 					markedZones[i, j] = true;
 					if (CheckBingo(i, j))
 					{
-						AnnounceVictory(calledNum);
+						hasBingo = true;
+						_remainingBingos--;
+						if (_remainingBingos == 0)
+						{
+							AnnounceVictory(calledNum);
+						}
 					}
 				}
 			}
@@ -79,15 +90,15 @@ public class Card
 	}
 }
 
-public class Day4
+public class Day4Part2
 {
-	static void OldMain()
+	static void Main()
 	{
 		string[] lines = File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
 		string drawsStr = lines[0];
 		int numOfCards = (lines.Length - 1) / 6;
 		int[ , ] numbers = new int[5,5]; // Holds a card as it's being built
-		Card[] cards = new Card[numOfCards];
+		LosingCard[] cards = new LosingCard[numOfCards];
 		
 		// Make the cards
 		for (int i = 2; i < lines.Length; i += 6)
@@ -99,12 +110,12 @@ public class Day4
 					numbers[j, k] = Convert.ToInt16(lines[i + j].Substring(3 * k, 2));
 				}
 			}
-			cards[(i - 2) / 6] = new Card(numbers);
+			cards[(i - 2) / 6] = new LosingCard(numbers);
 		}
 		// Call the numbers
 		foreach (string drawStr in drawsStr.Split(','))
 		{
-			foreach (Card card in cards)
+			foreach (LosingCard card in cards)
 			{
 				card.MarkCard(Convert.ToInt16(drawStr));
 			}
