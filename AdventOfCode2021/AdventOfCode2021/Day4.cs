@@ -8,11 +8,15 @@ namespace AdventOfCode2021;
 
 public class Card
 {
-	int[ , ] numbers = new int[5,5]; // Holds this card's numbers
-	bool[ , ] markedZones = new bool[5,5]; // Holds this card's numbers (false [unmarked] by default)
+	int[ , ] numbers; // Holds this card's numbers
+	bool[ , ] markedZones; // Holds this card's numbers (false [unmarked] by default)
 	public Card(int[,] _numbers)
 	{
-		numbers = _numbers;
+		// I learned the hard way that _number is just a reference and would assign as such,
+		// causing all cards to be overridden every time a new numbers[,] array was created.
+		// For this reason, we make a shallow copy (clone) of the 2D array.
+		numbers = (int[,]?)_numbers.Clone();
+		markedZones = new bool[5, 5];
 	}
 
 	public void MarkCard(int calledNum)
@@ -67,7 +71,6 @@ public class Card
 				if (markedZones[i, j] == false)
 				{
 					scoreMultiplier += numbers[i, j];
-					Console.WriteLine(numbers[i, j]);
 				}
 			}
 		}
@@ -85,7 +88,6 @@ public class Day4
 		int numOfCards = (lines.Length - 1) / 6;
 		int[ , ] numbers = new int[5,5]; // Holds a card as it's being built
 		Card[] cards = new Card[numOfCards];
-		// Console.WriteLine($"There are {numOfCards} cards.");
 		
 		// Make the cards
 		for (int i = 2; i < lines.Length; i += 6)
@@ -98,7 +100,6 @@ public class Day4
 				}
 			}
 			cards[(i - 2) / 6] = new Card(numbers);
-			// Console.WriteLine(lines[i]);
 		}
 		// Call the numbers
 		foreach (string drawStr in drawsStr.Split(','))
