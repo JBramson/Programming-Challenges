@@ -92,7 +92,7 @@ public class LosingCard
 
 public class Day4Part2
 {
-	static void Main()
+	static void OldMain()
 	{
 		string[] lines = File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
 		string drawsStr = lines[0];
