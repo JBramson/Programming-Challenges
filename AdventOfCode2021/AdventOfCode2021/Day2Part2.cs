@@ -1,5 +1,5 @@
 /*
- * https://adventofcode.com/2021/day/2
+ * https://adventofcode.com/2021/day/2#part2
  * Objective: Given a series of movements and re-orientations, calculate the final position,
  * multiplying the depth by the horizontal position.
  * Part of me learning C#.

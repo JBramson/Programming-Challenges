@@ -1,5 +1,5 @@
 /*
- * https://adventofcode.com/2021/day/3
+ * https://adventofcode.com/2021/day/3#part2
  * Objective: Given a series of binary numbers, count which bit is more popular in each place,
  * pruning the less popular values, with 1 winning the tiebreaker for Oxygen. Reverse all this for CO2.
  *

@@ -1,5 +1,5 @@
 /*
- * https://adventofcode.com/2021/day/3
+ * https://adventofcode.com/2021/day/4
  * Objective: Given a series of bingo rolls and cards, find the score of the winning board.
  * Diagonals do not count.
  * Part of me learning C#.
