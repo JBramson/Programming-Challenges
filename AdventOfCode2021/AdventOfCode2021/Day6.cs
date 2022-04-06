@@ -10,49 +10,44 @@ namespace AdventOfCode2021;
 
 public class Day6
 {
-	static List<Int16> timers = new List<short>();
-	
-	static void AddNewFish(int numToAdd)
-	{
-		for (int i = 0; i < numToAdd; i++)
-		{
-			timers.Add(8);
-		}
-	}
-	// TODO: Change storage from raw number list to array where positions represent the current number of each number
-	// TODO: e.g.: (0:1, 1:3, 2:2) could mean: {0, 1, 1, 1, 2, 2}
 	static void Main()
 	{
 		string initialLineStr =
 			File.ReadAllText("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
 		// Change numberOfDays to test each part.
 		const int numberOfDays = 256;
-		int currentReproductionCount = 0;
+		double[] counts = new double[9];
+		double[] newCounts = new double[9];
+		double totalFish = 0;
+
 
 		foreach (string initialNumberStr in initialLineStr.Split(","))
 		{
-			timers.Add(Convert.ToInt16(initialNumberStr));
+			counts[Convert.ToInt16(initialNumberStr)]++;
 		}
 
 		for (int i = 0; i < numberOfDays; i++)
 		{
-			for (int j = 0; j < timers.Count; j++)
+			Array.Clear(newCounts); // Reset all new values to 0
+			for (int j = 0; j < 9; j++)
 			{
-				if (timers[j] == 0)
+				if (j == 0)
 				{
-					currentReproductionCount++;
-					timers[j] = 6;
+					newCounts[8] = counts[0];
+					newCounts[6] = counts[0];
 				}
 				else
 				{
-					timers[j]--;
+					newCounts[j - 1] += counts[j];
 				}
 			}
-			AddNewFish(currentReproductionCount);
-			currentReproductionCount = 0;
-			Console.WriteLine(i);
+			counts = newCounts.Clone() as double[];
 		}
-		
-		Console.WriteLine(timers.Count);
+
+		foreach (double count in counts)
+		{
+			totalFish += count;
+		}
+		Console.WriteLine(totalFish);
 	}
 }
