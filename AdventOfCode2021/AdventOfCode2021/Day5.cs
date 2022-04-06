@@ -6,8 +6,6 @@
  * Part of me learning C#.
  */
 
-using System.Security.Cryptography;
-
 namespace AdventOfCode2021;
 
 public class Day5
@@ -155,7 +153,7 @@ public class Day5
 		}
 	}
 	
-	static void Main()
+	static void OldMain()
 	{
 		string[] lines = File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
 		string[] positions;
