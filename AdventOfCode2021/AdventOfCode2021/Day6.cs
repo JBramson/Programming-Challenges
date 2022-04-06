@@ -19,6 +19,8 @@ public class Day6
 			timers.Add(8);
 		}
 	}
+	// TODO: Change storage from raw number list to array where positions represent the current number of each number
+	// TODO: e.g.: (0:1, 1:3, 2:2) could mean: {0, 1, 1, 1, 2, 2}
 	static void Main()
 	{
 		string initialLineStr =
