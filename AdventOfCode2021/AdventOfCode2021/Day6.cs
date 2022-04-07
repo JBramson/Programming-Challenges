@@ -10,7 +10,7 @@ namespace AdventOfCode2021;
 
 public class Day6
 {
-	static void Main()
+	static void OldMain()
 	{
 		string initialLineStr =
 			File.ReadAllText("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
