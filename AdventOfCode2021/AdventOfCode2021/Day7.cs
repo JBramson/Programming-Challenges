@@ -1,5 +1,5 @@
 /*
- * https://adventofcode.com/2021/day/6
+ * https://adventofcode.com/2021/day/7
  * Objective: Given the initial positions of some crab ships,
  * find the minimum fuel needed to move each to the same spot.
  * Part 1: Each movement costs 1 fuel unit. (1, 1, 1, ... , 1)
@@ -21,7 +21,7 @@ public class Day7
 		return distance + GetCost(distance - 1);
 	}
 	
-	static void Main()
+	static void OldMain()
 	{
 		string inputString =
 			File.ReadAllText("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
