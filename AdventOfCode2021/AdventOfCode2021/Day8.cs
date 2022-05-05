@@ -39,6 +39,7 @@ public class Day8
 		string[] inputArray = new string[10];
 		string[] outputArray = new string[4];
 		string[] numberCodes = new string[10];
+		char[] locationCodes = new char[7]; // This is ordered as if reading a book- 0 is top, 1 is top-left, 3 is center, and 6 is bottom.
 
 		foreach (string line in inputString.Split("\n"))
 		{
@@ -52,20 +53,30 @@ public class Day8
 			switch (input.Length)
 			{
 				case 2:
-					numberCodes[0] = input;
+					numberCodes[1] = input;
 					break;
 				case 3:
-					numberCodes[6] = input;
+					numberCodes[7] = input;
 					break;
 				case 4:
-					numberCodes[3] = input;
+					numberCodes[4] = input;
 					break;
 				case 7:
-					numberCodes[7] = input;
+					numberCodes[8] = input;
 					break;
 			}
 		}
+		/* Now, we find the wires. */
+		// Top wire
+		locationCodes[0] = FindMissingChar(numberCodes[1], numberCodes[7]);
+		// Bottom wire (9 has this + the top)
+		// locationCodes[3] = FindMissingChar(numberCodes[4] + locationCodes[0], numberCodes[9]);
 		
+		foreach (char locationCode in locationCodes)
+		{
+			Console.WriteLine(locationCode);
+		}
+		return score;
 	}
 	
 	/*
@@ -79,6 +90,32 @@ public class Day8
 	* The only wire we haven't found is the top-left.
 	*/
 
+	// Find the singular character that is missing from shortString, but not longString.
+	// Flip if necessary.
+	static char FindMissingChar(string shortString, string longString)
+	{
+		if (shortString.Length + 1 != longString.Length)
+		{
+			string tempStr = longString;
+			longString = shortString;
+			shortString = tempStr;
+
+			if (shortString.Length + 1 != longString.Length)
+			{
+				throw new FormatException($"{shortString} is not 1 char shorter than {longString}.");
+			}
+		}
+		foreach (char c in longString)
+		{
+			if (!shortString.Contains(c))
+			{
+				return c;
+			}
+		}
+		throw new Exception("IDK what happened here- we didn't find a missing char.");
+	}
+
+	// Determine if two strings contain the same characters.
 	static bool DoesStringMatch(string firstStr, string secondStr)
 	{
 		if (firstStr.Length != secondStr.Length) return false;
