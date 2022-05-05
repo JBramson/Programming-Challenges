@@ -89,8 +89,16 @@ public class Day8
 				}
 			}
 		}
-		// Lower right (This is the other wire that 1 has)
-		// locationCodes[3] = FindMissingChar(numberCodes[4] + locationCodes[0], numberCodes[9]);
+		/* TODO:
+		 * Of the fives, the one that's missing the upper-right is 5,
+		 * the one that's missing the bottom-right is 2, and
+		 * the other is 3.
+		 */
+
+		 /*
+		  * TODO: Sort 9 and 0. (0 is missing one of 4's wires; 9 is not.)
+		  */
+		
 		
 		for (int i = 0; i < 7; i++)
 		{
