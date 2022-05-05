@@ -69,12 +69,32 @@ public class Day8
 		/* Now, we find the wires. */
 		// Top wire
 		locationCodes[0] = FindMissingChar(numberCodes[1], numberCodes[7]);
-		// Bottom wire (9 has this + the top)
+		// Upper right (This is the only missing wire of a 6-length that 1 has)
+		// Lower right (This is the other one that 1 has)
+		foreach (string input in inputArray)
+		{
+			if (input.Length == 6)
+			{
+				if (input.Contains(numberCodes[1][0]) && !input.Contains(numberCodes[1][1]))
+				{
+					locationCodes[2] = numberCodes[1][1];
+					numberCodes[6] = input;
+					locationCodes[5] = numberCodes[1][0];
+				}
+				else if (input.Contains(numberCodes[1][1]) && !input.Contains(numberCodes[1][0]))
+				{
+					locationCodes[2] = numberCodes[1][0];
+					numberCodes[6] = input;
+					locationCodes[5] = numberCodes[1][1];
+				}
+			}
+		}
+		// Lower right (This is the other wire that 1 has)
 		// locationCodes[3] = FindMissingChar(numberCodes[4] + locationCodes[0], numberCodes[9]);
 		
-		foreach (char locationCode in locationCodes)
+		for (int i = 0; i < 7; i++)
 		{
-			Console.WriteLine(locationCode);
+			Console.WriteLine($"{i}: {locationCodes[i]}");
 		}
 		return score;
 	}
