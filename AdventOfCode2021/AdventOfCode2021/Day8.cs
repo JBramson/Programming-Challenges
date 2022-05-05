@@ -43,80 +43,137 @@ public class Day8
 
 		foreach (string line in inputString.Split("\n"))
 		{
-			lineArray = line.Split("|");
+			lineArray = line.Split(" | ");
 			inputArray = lineArray[0].Split(" ");
 			outputArray = lineArray[1].Split(" ");
-		}
-		// Set the strings we know first (1, 7, 4, and 8)
-		foreach (string input in inputArray)
-		{
-			switch (input.Length)
-			{
-				case 2:
-					numberCodes[1] = input;
-					break;
-				case 3:
-					numberCodes[7] = input;
-					break;
-				case 4:
-					numberCodes[4] = input;
-					break;
-				case 7:
-					numberCodes[8] = input;
-					break;
-			}
-		}
-		/* Now, we find the wires. */
-		// Top wire
-		locationCodes[0] = FindMissingChar(numberCodes[1], numberCodes[7]);
-		// Upper right (This is the only missing wire of a 6-length that 1 has)
-		// Lower right (This is the other one that 1 has)
-		foreach (string input in inputArray)
-		{
-			if (input.Length == 6)
-			{
-				if (input.Contains(numberCodes[1][0]) && !input.Contains(numberCodes[1][1]))
-				{
-					locationCodes[2] = numberCodes[1][1];
-					numberCodes[6] = input;
-					locationCodes[5] = numberCodes[1][0];
-				}
-				else if (input.Contains(numberCodes[1][1]) && !input.Contains(numberCodes[1][0]))
-				{
-					locationCodes[2] = numberCodes[1][0];
-					numberCodes[6] = input;
-					locationCodes[5] = numberCodes[1][1];
-				}
-			}
-		}
-		/* TODO:
-		 * Of the fives, the one that's missing the upper-right is 5,
-		 * the one that's missing the bottom-right is 2, and
-		 * the other is 3.
-		 */
 
-		 /*
-		  * TODO: Sort 9 and 0. (0 is missing one of 4's wires; 9 is not.)
-		  */
-		
-		
-		for (int i = 0; i < 7; i++)
-		{
-			Console.WriteLine($"{i}: {locationCodes[i]}");
+			// Set the strings we know first (1, 7, 4, and 8)
+			foreach (string input in inputArray)
+			{
+				switch (input.Length)
+				{
+					case 2:
+						numberCodes[1] = input;
+						break;
+					case 3:
+						numberCodes[7] = input;
+						break;
+					case 4:
+						numberCodes[4] = input;
+						break;
+					case 7:
+						numberCodes[8] = input;
+						break;
+				}
+			}
+			/* Now, we find some wires. */
+			// Top wire
+			locationCodes[0] = FindMissingChar(numberCodes[1], numberCodes[7]);
+			// Upper right (This is the only missing wire of a 6-length that 1 has)
+			// Lower right (This is the other one that 1 has)
+			foreach (string input in inputArray)
+			{
+				if (input.Length == 6)
+				{
+					if (input.Contains(numberCodes[1][0]) && !input.Contains(numberCodes[1][1]))
+					{
+						locationCodes[2] = numberCodes[1][1];
+						numberCodes[6] = input;
+						locationCodes[5] = numberCodes[1][0];
+					}
+					else if (input.Contains(numberCodes[1][1]) && !input.Contains(numberCodes[1][0]))
+					{
+						locationCodes[2] = numberCodes[1][0];
+						numberCodes[6] = input;
+						locationCodes[5] = numberCodes[1][1];
+					}
+				}
+			}
+			/*
+			* Of the fives, the one that's missing the upper-right is 5, the one that's missing
+			* the bottom-right is 2, and the other is 3.
+			*/
+			foreach (string input in inputArray)
+			{
+				if (input.Length == 5)
+				{
+					if (!input.Contains(locationCodes[2]))
+					{
+						numberCodes[5] = input;
+					}
+					else if (!input.Contains(locationCodes[5]))
+					{
+						numberCodes[2] = input;
+					}
+					else
+					{
+						numberCodes[3] = input;
+					}
+				}
+			}
+
+			/*
+			* TODO: Sort 9 and 0. (0 is missing one of 4's wires; 9 is not.)
+			*/
+			// Remove the inputs we've already mapped from inputArray
+			for (int i = 0; i < inputArray.Length; i++)
+			{
+				foreach (string numberCode in numberCodes)
+				{
+					if (inputArray[i] == numberCode)
+					{
+						inputArray[i] = "";
+					}
+				}
+			}
+			
+			foreach (string input in inputArray)
+			{
+				bool zeroFoundHere = false;
+				if (input == "") continue;
+				
+				// Check against 4's wires
+				foreach (char c in numberCodes[4])
+				{
+					if (!input.Contains(c))
+					{
+						numberCodes[0] = input;
+						zeroFoundHere = true;
+					}
+				}
+				if (!zeroFoundHere) numberCodes[9] = input;
+			}
+			
+			// Fix the ordering of characters such that matches are possible ("ab" -> "ba")
+			foreach (string output in outputArray)
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					if (DoesStringMatch(numberCodes[i], output))
+					{
+						// Console.WriteLine($"Changing string {numberCodes[i]} to {output}");
+						numberCodes[i] = output;
+					}
+				}
+			}
+			// Convert the numberCodes array to a dict (note: if we were to do this again, 
+			// I'd just have it as a dict from the get-go).
+			Dictionary<string, int> numberCodesDict = new Dictionary<string, int>();
+			for (int i = 0; i < 10; i++)
+			{
+				numberCodesDict.Add(numberCodes[i], i);
+				Console.WriteLine($"Adding string {numberCodes[i]} as {i}");
+			}
+			// Sum the values in decreasing significance
+			for (int i = 0; i < 4; i++)
+			{
+				Console.WriteLine($"Checking string {outputArray[i]}");
+				score += numberCodesDict[outputArray[i]] * Convert.ToInt16(Math.Pow(10, 3 - i));
+			}
 		}
 		return score;
 	}
 	
-	/*
-	* Ideas for  part 2:
-	* The 0 entry will be missing a wire- this is the center.
-	* The 7 entry will have one wire the 1 entry does not- this is the top.
-	* The 9 entry will have two wires the 4 does not- one is the bottom, and the other is the top (already found).
-	*	* 9 will also lack a wire- this is the bottom-left.
-	* The 6 entry will lack a wire- this is the top-right.
-	* The 1 entry will contain a wire that 6 does not- this is the bottom-right.
-	* The only wire we haven't found is the top-left.
-	*/
 
 	// Find the singular character that is missing from shortString, but not longString.
 	// Flip if necessary.
