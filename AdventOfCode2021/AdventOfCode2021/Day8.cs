@@ -145,30 +145,41 @@ public class Day8
 			}
 			
 			// Fix the ordering of characters such that matches are possible ("ab" -> "ba")
-			foreach (string output in outputArray)
-			{
-				for (int i = 0; i < 10; i++)
-				{
-					if (DoesStringMatch(numberCodes[i], output))
-					{
-						// Console.WriteLine($"Changing string {numberCodes[i]} to {output}");
-						numberCodes[i] = output;
-					}
-				}
-			}
-			// Convert the numberCodes array to a dict (note: if we were to do this again, 
-			// I'd just have it as a dict from the get-go).
+			// And convert the numberCodes array to a dict (note: if we were to do this again, 
+			// I'd just have it as a dict from the get-go). Also, this could probably be simlified
+			// because I didn't know that we could have duplicates with different spellings for output.
 			Dictionary<string, int> numberCodesDict = new Dictionary<string, int>();
 			for (int i = 0; i < 10; i++)
 			{
-				numberCodesDict.Add(numberCodes[i], i);
-				Console.WriteLine($"Adding string {numberCodes[i]} as {i}");
+				foreach (string output in outputArray)
+				{
+					if (DoesStringMatch(numberCodes[i], output) && !numberCodesDict.ContainsValue(i))
+					{
+						// Console.WriteLine($"Changing string {numberCodes[i]} to {output}");
+						// numberCodes[i] = output;
+						numberCodesDict.Add(output, i);
+						break;
+					}
+					else if (!numberCodesDict.ContainsValue(i))
+					{
+						// Console.WriteLine($"Adding string {numberCodes[i]} as {i}");
+						numberCodesDict.Add(numberCodes[i], i);
+						// break;
+					}
+				}
 			}
-			// Sum the values in decreasing significance
+			
 			for (int i = 0; i < 4; i++)
 			{
 				Console.WriteLine($"Checking string {outputArray[i]}");
-				score += numberCodesDict[outputArray[i]] * Convert.ToInt16(Math.Pow(10, 3 - i));
+				foreach (KeyValuePair<string, int> numberCodePair in numberCodesDict)
+				{
+					if (DoesStringMatch(numberCodePair.Key, outputArray[i]))
+					{
+						score += numberCodePair.Value * Convert.ToInt16(Math.Pow(10, 3 - i));
+						break;		
+					}
+				}
 			}
 		}
 		return score;
@@ -219,9 +230,6 @@ public class Day8
 	{
 		string inputString =
 			File.ReadAllText("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
-		
-		// List<string> inputs = new List<string>();
-		// List<string> outputs = new List<string>();
 		
 		
 		Console.WriteLine(Part2Solution(inputString));
