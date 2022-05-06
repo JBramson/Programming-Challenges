@@ -112,9 +112,6 @@ public class Day8
 				}
 			}
 
-			/*
-			* TODO: Sort 9 and 0. (0 is missing one of 4's wires; 9 is not.)
-			*/
 			// Remove the inputs we've already mapped from inputArray
 			for (int i = 0; i < inputArray.Length; i++)
 			{
@@ -155,16 +152,12 @@ public class Day8
 				{
 					if (DoesStringMatch(numberCodes[i], output) && !numberCodesDict.ContainsValue(i))
 					{
-						// Console.WriteLine($"Changing string {numberCodes[i]} to {output}");
-						// numberCodes[i] = output;
 						numberCodesDict.Add(output, i);
 						break;
 					}
 					else if (!numberCodesDict.ContainsValue(i))
 					{
-						// Console.WriteLine($"Adding string {numberCodes[i]} as {i}");
 						numberCodesDict.Add(numberCodes[i], i);
-						// break;
 					}
 				}
 			}
