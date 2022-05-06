@@ -219,7 +219,7 @@ public class Day8
 		return true;
 	}
 	
-	static void Main()
+	static void OldMain()
 	{
 		string inputString =
 			File.ReadAllText("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
