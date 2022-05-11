@@ -204,17 +204,20 @@ public class Day9
 			}
 		}		
 
+		// Console.WriteLine($"Basin position count: {basinPositions.Count}");
 		foreach (Tuple<int, int> startingPosition in basinPositions)
 		{
 			int currentBasinSize = 0;
 			Stack<Tuple<int, int>> positionStack = new Stack<Tuple<int, int>>();
 			HashSet<Tuple<int, int>> observedPositions = new HashSet<Tuple<int, int>>();
-			positionStack.Append(startingPosition); // Front-load the starting position
+			positionStack.Push(startingPosition); // Front-load the starting position
+			// Console.WriteLine(positionStack.First().Item1);
 
 			while (positionStack.Any()) // Runs until the stack is empty (or we break out)
 			{
 				Tuple<int, int> currentPosition = positionStack.Pop();
 				observedPositions.Add(currentPosition);
+				currentBasinSize++;
 
 				if (currentPosition.Item1 == 0)
 				{
@@ -247,7 +250,79 @@ public class Day9
 					checkLeft = true;
 					checkRight = true;
 				}
+
+				Console.Write(checkLeft);
+				Console.Write(checkRight);
+				Console.Write(checkUp);
+				Console.WriteLine(checkDown);
+				// Now that the directions to check are set, we can see if we can add new locations or stop checking.
+				if (checkLeft)
+				{
+					// TODO: Find out why the first section of this if condition isn't evaluating to true.
+					Console.WriteLine($"Checked left: {numbersArray[currentPosition.Item1,currentPosition.Item2]} vs {numbersArray[currentPosition.Item1,currentPosition.Item2 - 1]}");
+					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] + 1 == numbersArray[currentPosition.Item1,currentPosition.Item2 - 1])
+						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2)))
+					{
+						positionStack.Push(new Tuple<int, int>(currentPosition.Item1,currentPosition.Item2 - 1));
+						Console.WriteLine("Appended left");
+					}
+					else if ((numbersArray[currentPosition.Item1,currentPosition.Item2] - 1 == numbersArray[currentPosition.Item1,currentPosition.Item2 - 1])
+						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 - 1)))
+					{
+						currentBasinSize = 0;
+						break;
+					}
+				}
+				if (checkRight)
+				{
+					Console.WriteLine("Checked right");
+					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] + 1 == numbersArray[currentPosition.Item1,currentPosition.Item2 + 1])
+						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2)))
+					{
+						positionStack.Push(new Tuple<int, int>(currentPosition.Item1,currentPosition.Item2 + 1));
+						Console.WriteLine("Appended right");
+					}
+					else if ((numbersArray[currentPosition.Item1,currentPosition.Item2] - 1 == numbersArray[currentPosition.Item1,currentPosition.Item2 + 1])
+						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 + 1)))
+					{
+						currentBasinSize = 0;
+						break;
+					}
+				}
+				if (checkUp)
+				{
+					Console.WriteLine("Checked up");
+					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] + 1 == numbersArray[currentPosition.Item1 - 1,currentPosition.Item2])
+						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2)))
+					{
+						positionStack.Push(new Tuple<int, int>(currentPosition.Item1 - 1,currentPosition.Item2));
+						Console.WriteLine("Appended up");
+					}
+					else if ((numbersArray[currentPosition.Item1,currentPosition.Item2] - 1 == numbersArray[currentPosition.Item1 - 1,currentPosition.Item2])
+						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 - 1, currentPosition.Item2)))
+					{
+						currentBasinSize = 0;
+						break;
+					}
+				}
+				if (checkDown)
+				{
+					Console.WriteLine("Checked down");
+					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] + 1 == numbersArray[currentPosition.Item1 + 1,currentPosition.Item2])
+						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2)))
+					{
+						positionStack.Push(new Tuple<int, int>(currentPosition.Item1 + 1,currentPosition.Item2));
+						Console.WriteLine("Appended down");
+					}
+					else if ((numbersArray[currentPosition.Item1,currentPosition.Item2] - 1 == numbersArray[currentPosition.Item1 + 1,currentPosition.Item2])
+						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 + 1, currentPosition.Item2)))
+					{
+						currentBasinSize = 0;
+						break;
+					}
+				}
 			}
+			Console.WriteLine($"Basin size: {currentBasinSize}");
 		}
 
 		return basinTotals;
