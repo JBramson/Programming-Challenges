@@ -266,13 +266,13 @@ public class Day9
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1,currentPosition.Item2 - 1));
 						Console.WriteLine("Appended left");
 					}
-					else if ((numbersArray[currentPosition.Item1,currentPosition.Item2] - 1 == numbersArray[currentPosition.Item1,currentPosition.Item2 - 1])
-						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 - 1)))
-					{
-						Console.WriteLine($"Supposed disqualifier detected at ({currentPosition.Item1}, {currentPosition.Item2})");
-						currentBasinSize = 0;
-						break;
-					}
+					// else if ((numbersArray[currentPosition.Item1,currentPosition.Item2] - 1 == numbersArray[currentPosition.Item1,currentPosition.Item2 - 1])
+					// 	&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 - 1)))
+					// {
+					// 	Console.WriteLine($"Supposed disqualifier detected at ({currentPosition.Item1}, {currentPosition.Item2})");
+					// 	currentBasinSize = 0;
+					// 	break;
+					// }
 				}
 				if (checkRight)
 				{
@@ -283,13 +283,13 @@ public class Day9
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1,currentPosition.Item2 + 1));
 						Console.WriteLine("Appended right");
 					}
-					else if ((numbersArray[currentPosition.Item1,currentPosition.Item2] - 1 == numbersArray[currentPosition.Item1,currentPosition.Item2 + 1])
-						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 + 1)))
-					{
-						Console.WriteLine($"Supposed disqualifier detected at ({currentPosition.Item1}, {currentPosition.Item2})");
-						currentBasinSize = 0;
-						break;
-					}
+					// else if ((numbersArray[currentPosition.Item1,currentPosition.Item2] - 1 == numbersArray[currentPosition.Item1,currentPosition.Item2 + 1])
+					// 	&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 + 1)))
+					// {
+					// 	Console.WriteLine($"Supposed disqualifier detected at ({currentPosition.Item1}, {currentPosition.Item2})");
+					// 	currentBasinSize = 0;
+					// 	break;
+					// }
 				}
 				if (checkUp)
 				{
@@ -300,13 +300,13 @@ public class Day9
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1 - 1,currentPosition.Item2));
 						Console.WriteLine("Appended up");
 					}
-					else if ((numbersArray[currentPosition.Item1,currentPosition.Item2] - 1 == numbersArray[currentPosition.Item1 - 1,currentPosition.Item2])
-						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 - 1, currentPosition.Item2)))
-					{
-						Console.WriteLine($"Supposed disqualifier detected at ({currentPosition.Item1}, {currentPosition.Item2})");
-						currentBasinSize = 0;
-						break;
-					}
+					// else if ((numbersArray[currentPosition.Item1,currentPosition.Item2] - 1 == numbersArray[currentPosition.Item1 - 1,currentPosition.Item2])
+					// 	&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 - 1, currentPosition.Item2)))
+					// {
+					// 	Console.WriteLine($"Supposed disqualifier detected at ({currentPosition.Item1}, {currentPosition.Item2})");
+					// 	currentBasinSize = 0;
+					// 	break;
+					// }
 				}
 				if (checkDown)
 				{
@@ -317,13 +317,13 @@ public class Day9
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1 + 1,currentPosition.Item2));
 						Console.WriteLine("Appended down");
 					}
-					else if ((numbersArray[currentPosition.Item1,currentPosition.Item2] - 1 == numbersArray[currentPosition.Item1 + 1,currentPosition.Item2])
-						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 + 1, currentPosition.Item2)))
-					{
-						Console.WriteLine($"Supposed disqualifier detected at ({currentPosition.Item1}, {currentPosition.Item2})");
-						currentBasinSize = 0;
-						break;
-					}
+					// else if ((numbersArray[currentPosition.Item1,currentPosition.Item2] - 1 == numbersArray[currentPosition.Item1 + 1,currentPosition.Item2])
+					// 	&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 + 1, currentPosition.Item2)))
+					// {
+					// 	Console.WriteLine($"Supposed disqualifier detected at ({currentPosition.Item1}, {currentPosition.Item2})");
+					// 	currentBasinSize = 0;
+					// 	break;
+					// }
 				}
 			}
 			Console.WriteLine($"Basin size: {currentBasinSize}");
