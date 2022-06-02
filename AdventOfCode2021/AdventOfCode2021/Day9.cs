@@ -111,7 +111,7 @@ public class Day9
 		 * Make a list of the low points' locations, and for each:
 		 * 	Pop the location off of the stack and increment our total.
 		 * 	Add each bordering cell to the stack if it's one greater than the current position.
-		 	* If the bordering cell is less than the current one, stop checking. The smaller one will have a bigger basin.
+		 	*  (INCORRECT- HAS FALSE POSITIVES IF THERE ARE TWO LESSER VALUES WHEN ONE ISN'T CHECKED): If the bordering cell is less than the current one, stop checking. The smaller one will have a bigger basin.
 		 * 	Repeat the above until the stack is empty.
 		 * Record the size of the stack.
 		 * Take the three biggest stacks and return the product of their sizes.
@@ -251,79 +251,39 @@ public class Day9
 					checkRight = true;
 				}
 
-				Console.Write(checkLeft);
-				Console.Write(checkRight);
-				Console.Write(checkUp);
-				Console.WriteLine(checkDown);
+				
 				// Now that the directions to check are set, we can see if we can add new locations or stop checking.
 				if (checkLeft)
 				{
-					Console.WriteLine($"Checked left: {numbersArray[currentPosition.Item1,currentPosition.Item2]} vs {numbersArray[currentPosition.Item1,currentPosition.Item2 - 1]}");
-					// Console.WriteLine(!observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 - 1)));
 					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] + 1 == numbersArray[currentPosition.Item1,currentPosition.Item2 - 1])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 - 1)))
 					{
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1,currentPosition.Item2 - 1));
-						Console.WriteLine("Appended left");
 					}
-					// else if ((numbersArray[currentPosition.Item1,currentPosition.Item2] - 1 == numbersArray[currentPosition.Item1,currentPosition.Item2 - 1])
-					// 	&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 - 1)))
-					// {
-					// 	Console.WriteLine($"Supposed disqualifier detected at ({currentPosition.Item1}, {currentPosition.Item2})");
-					// 	currentBasinSize = 0;
-					// 	break;
-					// }
 				}
 				if (checkRight)
 				{
-					Console.WriteLine("Checked right");
 					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] + 1 == numbersArray[currentPosition.Item1,currentPosition.Item2 + 1])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 + 1)))
 					{
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1,currentPosition.Item2 + 1));
-						Console.WriteLine("Appended right");
 					}
-					// else if ((numbersArray[currentPosition.Item1,currentPosition.Item2] - 1 == numbersArray[currentPosition.Item1,currentPosition.Item2 + 1])
-					// 	&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 + 1)))
-					// {
-					// 	Console.WriteLine($"Supposed disqualifier detected at ({currentPosition.Item1}, {currentPosition.Item2})");
-					// 	currentBasinSize = 0;
-					// 	break;
-					// }
 				}
 				if (checkUp)
 				{
-					Console.WriteLine("Checked up");
 					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] + 1 == numbersArray[currentPosition.Item1 - 1,currentPosition.Item2])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 - 1, currentPosition.Item2)))
 					{
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1 - 1,currentPosition.Item2));
-						Console.WriteLine("Appended up");
 					}
-					// else if ((numbersArray[currentPosition.Item1,currentPosition.Item2] - 1 == numbersArray[currentPosition.Item1 - 1,currentPosition.Item2])
-					// 	&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 - 1, currentPosition.Item2)))
-					// {
-					// 	Console.WriteLine($"Supposed disqualifier detected at ({currentPosition.Item1}, {currentPosition.Item2})");
-					// 	currentBasinSize = 0;
-					// 	break;
-					// }
 				}
 				if (checkDown)
 				{
-					Console.WriteLine("Checked down");
 					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] + 1 == numbersArray[currentPosition.Item1 + 1,currentPosition.Item2])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 + 1, currentPosition.Item2)))
 					{
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1 + 1,currentPosition.Item2));
-						Console.WriteLine("Appended down");
 					}
-					// else if ((numbersArray[currentPosition.Item1,currentPosition.Item2] - 1 == numbersArray[currentPosition.Item1 + 1,currentPosition.Item2])
-					// 	&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 + 1, currentPosition.Item2)))
-					// {
-					// 	Console.WriteLine($"Supposed disqualifier detected at ({currentPosition.Item1}, {currentPosition.Item2})");
-					// 	currentBasinSize = 0;
-					// 	break;
-					// }
 				}
 			}
 			Console.WriteLine($"Basin size: {currentBasinSize}");
