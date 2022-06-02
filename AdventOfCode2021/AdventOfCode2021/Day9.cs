@@ -117,11 +117,11 @@ public class Day9
 		 * Take the three biggest stacks and return the product of their sizes.
 		 */
 		int height = inputStrings.Length, length = inputStrings[0].Length;
+		int smallestBasinSize = 0, middleBasinSize = 0, largestBasinSize = 0;
 		// int minPositionTotals = 0;
 		List<Tuple<int, int>> basinPositions = new List<Tuple<int, int>>();
 		bool checkUp, checkDown, checkLeft, checkRight;
 		ushort[,] numbersArray = new ushort[height, length];
-		int[] maxBasinSizes = {0, 0, 0};
 
 		// Convert the strings array to a 2D numbers array.
 		// If there's a more efficient way to do this, i.e.
@@ -300,9 +300,24 @@ public class Day9
 				}
 			}
 			Console.WriteLine($"Basin size: {currentBasinSize}");
+			if (currentBasinSize > largestBasinSize)
+			{
+				smallestBasinSize = middleBasinSize;
+				middleBasinSize = largestBasinSize;
+				largestBasinSize = currentBasinSize;
+			}
+			else if (currentBasinSize > middleBasinSize)
+			{
+				smallestBasinSize = middleBasinSize;
+				middleBasinSize = currentBasinSize;
+			}
+			else if (currentBasinSize > smallestBasinSize)
+			{
+				smallestBasinSize = currentBasinSize;
+			}
 		}
 
-		return basinTotals;
+		return smallestBasinSize * middleBasinSize * largestBasinSize;
 	}
 	
 	static void Main()
