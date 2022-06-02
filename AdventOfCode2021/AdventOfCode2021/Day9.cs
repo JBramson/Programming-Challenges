@@ -205,19 +205,20 @@ public class Day9
 		}		
 
 		// Console.WriteLine($"Basin position count: {basinPositions.Count}");
+		HashSet<Tuple<int, int>> observedPositions = new HashSet<Tuple<int, int>>();
 		foreach (Tuple<int, int> startingPosition in basinPositions)
 		{
-			int currentBasinSize = 0;
+			int currentBasinSize = 1; // The first is guaranteed to be checked, but others are not.
 			Stack<Tuple<int, int>> positionStack = new Stack<Tuple<int, int>>();
-			HashSet<Tuple<int, int>> observedPositions = new HashSet<Tuple<int, int>>();
 			positionStack.Push(startingPosition); // Front-load the starting position
 			// Console.WriteLine(positionStack.First().Item1);
 
 			while (positionStack.Any()) // Runs until the stack is empty (or we break out)
 			{
 				Tuple<int, int> currentPosition = positionStack.Pop();
+				// observedPositions.Add(currentPosition);
 				observedPositions.Add(currentPosition);
-				currentBasinSize++;
+				// Console.WriteLine($"Total observed positions: {observedPositions.Count} : ({currentPosition.Item1}, {currentPosition.Item2})");
 
 				if (currentPosition.Item1 == 0)
 				{
@@ -256,32 +257,44 @@ public class Day9
 				if (checkLeft)
 				{
 					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] + 1 == numbersArray[currentPosition.Item1,currentPosition.Item2 - 1])
+						&& (9 != numbersArray[currentPosition.Item1,currentPosition.Item2 - 1])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 - 1)))
 					{
+						currentBasinSize++;
+						// Console.WriteLine("\tAdded!");
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1,currentPosition.Item2 - 1));
 					}
 				}
 				if (checkRight)
 				{
 					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] + 1 == numbersArray[currentPosition.Item1,currentPosition.Item2 + 1])
+						&& (9 != numbersArray[currentPosition.Item1,currentPosition.Item2 + 1])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 + 1)))
 					{
+						currentBasinSize++;
+						// Console.WriteLine("\tAdded!");
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1,currentPosition.Item2 + 1));
 					}
 				}
 				if (checkUp)
 				{
 					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] + 1 == numbersArray[currentPosition.Item1 - 1,currentPosition.Item2])
+						&& (9 != numbersArray[currentPosition.Item1 - 1,currentPosition.Item2])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 - 1, currentPosition.Item2)))
 					{
+						currentBasinSize++;
+						// Console.WriteLine("\tAdded!");
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1 - 1,currentPosition.Item2));
 					}
 				}
 				if (checkDown)
 				{
 					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] + 1 == numbersArray[currentPosition.Item1 + 1,currentPosition.Item2])
+						&& (9 != numbersArray[currentPosition.Item1 + 1,currentPosition.Item2])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 + 1, currentPosition.Item2)))
 					{
+						currentBasinSize++;
+						// Console.WriteLine("\tAdded!");
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1 + 1,currentPosition.Item2));
 					}
 				}
