@@ -104,21 +104,8 @@ public class Day9
 
 	static int Part2Solution(string[] inputStrings)
 	{
-		int basinTotals = 0;
-
-		/*
-		 * Theory:
-		 * Make a list of the low points' locations, and for each:
-		 * 	Pop the location off of the stack and increment our total.
-		 * 	Add each bordering cell to the stack if it's one greater than the current position.
-		 	*  (INCORRECT- HAS FALSE POSITIVES IF THERE ARE TWO LESSER VALUES WHEN ONE ISN'T CHECKED): If the bordering cell is less than the current one, stop checking. The smaller one will have a bigger basin.
-		 * 	Repeat the above until the stack is empty.
-		 * Record the size of the stack.
-		 * Take the three biggest stacks and return the product of their sizes.
-		 */
 		int height = inputStrings.Length, length = inputStrings[0].Length;
 		int smallestBasinSize = 0, middleBasinSize = 0, largestBasinSize = 0;
-		// int minPositionTotals = 0;
 		List<Tuple<int, int>> basinPositions = new List<Tuple<int, int>>();
 		bool checkUp, checkDown, checkLeft, checkRight;
 		ushort[,] numbersArray = new ushort[height, length];
@@ -210,36 +197,12 @@ public class Day9
 			HashSet<Tuple<int, int>> observedPositions = new HashSet<Tuple<int, int>>();
 			Stack<Tuple<int, int>> positionStack = new Stack<Tuple<int, int>>();
 			positionStack.Push(startingPosition); // Front-load the starting position
-			// Console.WriteLine(positionStack.First().Item1);
 
 			while (positionStack.Any()) // Runs until the stack is empty (or we break out)
 			{
 				Tuple<int, int> currentPosition = positionStack.Pop();
-				// observedPositions.Add(currentPosition);
 				observedPositions.Add(currentPosition);
-				// Console.WriteLine($"Total observed positions: {observedPositions.Count} : ({currentPosition.Item1}, {currentPosition.Item2})");
-
-				// if (startingPosition.Item1 == 2 && startingPosition.Item2 == 2)
-				// // if (true)
-				// {
-				// 	for (int i = 0; i < height; i++)
-				// 	{
-				// 		for (int j = 0; j < length; j++)
-				// 		{
-				// 			if (observedPositions.Contains(new Tuple<int, int>(i, j)))
-				// 			{
-				// 				Console.Write(numbersArray[i,j]);					
-				// 			}
-				// 			else
-				// 			{
-				// 				Console.Write(".");
-				// 			}
-				// 		}
-				// 		Console.WriteLine();
-				// 	}
-				// 	Console.WriteLine();
-				// }
-
+				
 				if (currentPosition.Item1 == 0)
 				{
 					checkUp = false;
@@ -280,7 +243,6 @@ public class Day9
 						&& (9 != numbersArray[currentPosition.Item1,currentPosition.Item2 - 1])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 - 1)))
 					{
-						// Console.WriteLine("\tAdded!");
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1,currentPosition.Item2 - 1));
 					}
 				}
@@ -290,7 +252,6 @@ public class Day9
 						&& (9 != numbersArray[currentPosition.Item1,currentPosition.Item2 + 1])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 + 1)))
 					{
-						// Console.WriteLine("\tAdded!");
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1,currentPosition.Item2 + 1));
 					}
 				}
@@ -300,7 +261,6 @@ public class Day9
 						&& (9 != numbersArray[currentPosition.Item1 - 1,currentPosition.Item2])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 - 1, currentPosition.Item2)))
 					{
-						// Console.WriteLine("\tAdded!");
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1 - 1,currentPosition.Item2));
 					}
 				}
@@ -310,27 +270,11 @@ public class Day9
 						&& (9 != numbersArray[currentPosition.Item1 + 1,currentPosition.Item2])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 + 1, currentPosition.Item2)))
 					{
-						// Console.WriteLine("\tAdded!");
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1 + 1,currentPosition.Item2));
 					}
 				}
 			}
-			Console.WriteLine($"Basin size: {observedPositions.Count}");
-			// for (int i = 0; i < height; i++)
-			// {
-			// 	for (int j = 0; j < length; j++)
-			// 	{
-			// 		if (observedPositions.Contains(new Tuple<int, int>(i, j)))
-			// 		{
-			// 			Console.Write(numbersArray[i,j]);					
-			// 		}
-			// 		else
-			// 		{
-			// 			Console.Write(".");
-			// 		}
-			// 	}
-			// 	Console.WriteLine();
-			// }
+			
 			if (observedPositions.Count > largestBasinSize)
 			{
 				smallestBasinSize = middleBasinSize;
