@@ -205,9 +205,9 @@ public class Day9
 		}		
 
 		// Console.WriteLine($"Basin position count: {basinPositions.Count}");
-		HashSet<Tuple<int, int>> observedPositions = new HashSet<Tuple<int, int>>();
 		foreach (Tuple<int, int> startingPosition in basinPositions)
 		{
+			HashSet<Tuple<int, int>> observedPositions = new HashSet<Tuple<int, int>>();
 			int currentBasinSize = 1; // The first is guaranteed to be checked, but others are not.
 			Stack<Tuple<int, int>> positionStack = new Stack<Tuple<int, int>>();
 			positionStack.Push(startingPosition); // Front-load the starting position
@@ -256,7 +256,7 @@ public class Day9
 				// Now that the directions to check are set, we can see if we can add new locations or stop checking.
 				if (checkLeft)
 				{
-					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] + 1 == numbersArray[currentPosition.Item1,currentPosition.Item2 - 1])
+					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] < numbersArray[currentPosition.Item1,currentPosition.Item2 - 1])
 						&& (9 != numbersArray[currentPosition.Item1,currentPosition.Item2 - 1])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 - 1)))
 					{
@@ -267,7 +267,7 @@ public class Day9
 				}
 				if (checkRight)
 				{
-					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] + 1 == numbersArray[currentPosition.Item1,currentPosition.Item2 + 1])
+					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] < numbersArray[currentPosition.Item1,currentPosition.Item2 + 1])
 						&& (9 != numbersArray[currentPosition.Item1,currentPosition.Item2 + 1])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 + 1)))
 					{
@@ -278,7 +278,7 @@ public class Day9
 				}
 				if (checkUp)
 				{
-					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] + 1 == numbersArray[currentPosition.Item1 - 1,currentPosition.Item2])
+					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] < numbersArray[currentPosition.Item1 - 1,currentPosition.Item2])
 						&& (9 != numbersArray[currentPosition.Item1 - 1,currentPosition.Item2])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 - 1, currentPosition.Item2)))
 					{
@@ -289,7 +289,7 @@ public class Day9
 				}
 				if (checkDown)
 				{
-					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] + 1 == numbersArray[currentPosition.Item1 + 1,currentPosition.Item2])
+					if ((numbersArray[currentPosition.Item1,currentPosition.Item2] < numbersArray[currentPosition.Item1 + 1,currentPosition.Item2])
 						&& (9 != numbersArray[currentPosition.Item1 + 1,currentPosition.Item2])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 + 1, currentPosition.Item2)))
 					{
