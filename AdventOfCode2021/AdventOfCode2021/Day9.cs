@@ -208,7 +208,6 @@ public class Day9
 		foreach (Tuple<int, int> startingPosition in basinPositions)
 		{
 			HashSet<Tuple<int, int>> observedPositions = new HashSet<Tuple<int, int>>();
-			int currentBasinSize = 1; // The first is guaranteed to be checked, but others are not.
 			Stack<Tuple<int, int>> positionStack = new Stack<Tuple<int, int>>();
 			positionStack.Push(startingPosition); // Front-load the starting position
 			// Console.WriteLine(positionStack.First().Item1);
@@ -219,6 +218,27 @@ public class Day9
 				// observedPositions.Add(currentPosition);
 				observedPositions.Add(currentPosition);
 				// Console.WriteLine($"Total observed positions: {observedPositions.Count} : ({currentPosition.Item1}, {currentPosition.Item2})");
+
+				// if (startingPosition.Item1 == 2 && startingPosition.Item2 == 2)
+				// // if (true)
+				// {
+				// 	for (int i = 0; i < height; i++)
+				// 	{
+				// 		for (int j = 0; j < length; j++)
+				// 		{
+				// 			if (observedPositions.Contains(new Tuple<int, int>(i, j)))
+				// 			{
+				// 				Console.Write(numbersArray[i,j]);					
+				// 			}
+				// 			else
+				// 			{
+				// 				Console.Write(".");
+				// 			}
+				// 		}
+				// 		Console.WriteLine();
+				// 	}
+				// 	Console.WriteLine();
+				// }
 
 				if (currentPosition.Item1 == 0)
 				{
@@ -260,7 +280,6 @@ public class Day9
 						&& (9 != numbersArray[currentPosition.Item1,currentPosition.Item2 - 1])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 - 1)))
 					{
-						currentBasinSize++;
 						// Console.WriteLine("\tAdded!");
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1,currentPosition.Item2 - 1));
 					}
@@ -271,7 +290,6 @@ public class Day9
 						&& (9 != numbersArray[currentPosition.Item1,currentPosition.Item2 + 1])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1, currentPosition.Item2 + 1)))
 					{
-						currentBasinSize++;
 						// Console.WriteLine("\tAdded!");
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1,currentPosition.Item2 + 1));
 					}
@@ -282,7 +300,6 @@ public class Day9
 						&& (9 != numbersArray[currentPosition.Item1 - 1,currentPosition.Item2])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 - 1, currentPosition.Item2)))
 					{
-						currentBasinSize++;
 						// Console.WriteLine("\tAdded!");
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1 - 1,currentPosition.Item2));
 					}
@@ -293,27 +310,41 @@ public class Day9
 						&& (9 != numbersArray[currentPosition.Item1 + 1,currentPosition.Item2])
 						&& !observedPositions.Contains(new Tuple<int, int>(currentPosition.Item1 + 1, currentPosition.Item2)))
 					{
-						currentBasinSize++;
 						// Console.WriteLine("\tAdded!");
 						positionStack.Push(new Tuple<int, int>(currentPosition.Item1 + 1,currentPosition.Item2));
 					}
 				}
 			}
-			Console.WriteLine($"Basin size: {currentBasinSize}");
-			if (currentBasinSize > largestBasinSize)
+			Console.WriteLine($"Basin size: {observedPositions.Count}");
+			// for (int i = 0; i < height; i++)
+			// {
+			// 	for (int j = 0; j < length; j++)
+			// 	{
+			// 		if (observedPositions.Contains(new Tuple<int, int>(i, j)))
+			// 		{
+			// 			Console.Write(numbersArray[i,j]);					
+			// 		}
+			// 		else
+			// 		{
+			// 			Console.Write(".");
+			// 		}
+			// 	}
+			// 	Console.WriteLine();
+			// }
+			if (observedPositions.Count > largestBasinSize)
 			{
 				smallestBasinSize = middleBasinSize;
 				middleBasinSize = largestBasinSize;
-				largestBasinSize = currentBasinSize;
+				largestBasinSize = observedPositions.Count;
 			}
-			else if (currentBasinSize > middleBasinSize)
+			else if (observedPositions.Count > middleBasinSize)
 			{
 				smallestBasinSize = middleBasinSize;
-				middleBasinSize = currentBasinSize;
+				middleBasinSize = observedPositions.Count;
 			}
-			else if (currentBasinSize > smallestBasinSize)
+			else if (observedPositions.Count > smallestBasinSize)
 			{
-				smallestBasinSize = currentBasinSize;
+				smallestBasinSize = observedPositions.Count;
 			}
 		}
 
