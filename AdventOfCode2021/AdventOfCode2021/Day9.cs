@@ -295,7 +295,7 @@ public class Day9
 		return smallestBasinSize * middleBasinSize * largestBasinSize;
 	}
 	
-	static void Main()
+	static void OldMain()
 	{
 		string[] inputStrings =
 			File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
