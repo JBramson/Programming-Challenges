@@ -1,8 +1,8 @@
 /*
  * https://adventofcode.com/2021/day/10
  * Objective: Given a series of lines of chunks,
- * Part 1: Find the first character that is an improper close for each line and sum their score.
- * Part 2: 
+ * Part 1: Find the first character that is an improper closer for each line and sum their score.
+ * Part 2: Find the missing characters on the other lines and compute thier scores.
  * Part of me learning C#.
  */
 
@@ -42,7 +42,6 @@ public class Day10
 	{
 		Stack<char> chars = new Stack<char>();
 
-		// Console.WriteLine(line);
 		foreach (char c in line)
 		{
 			if (IsOpener(c))
@@ -55,7 +54,6 @@ public class Day10
 			}
 			else
 			{
-				// Console.WriteLine($"{c} vs. {chars.Peek()}");
 				return c;
 			}
 		}
@@ -68,7 +66,6 @@ public class Day10
 
 		foreach (string line in inputStrings)
 		{
-			// Console.WriteLine(FindFirstIncorrectChar(line));
 			switch (FindFirstIncorrectChar(line))
 			{
 				case ')':
@@ -135,13 +132,13 @@ public class Day10
 	static decimal Part2Solution(string[] inputStrings)
 	{
 		string completionString;
-		List<float> listScores = new List<float>();
+		List<decimal> listScores = new List<decimal>();
 
 		foreach (string line in inputStrings)
 		{
 			if (FindFirstIncorrectChar(line) == '0')
 			{
-				float totalScore = 0;
+				decimal totalScore = 0;
 				completionString = FindCompletionString(line);
 				foreach (char c in completionString)
 				{
@@ -165,12 +162,9 @@ public class Day10
 				listScores.Add(totalScore);
 			}
 		}
+		
 		listScores.Sort();
-		Console.WriteLine(listScores.Count);
-		Console.WriteLine((decimal) listScores[listScores.Count / 2 - 1]);
-		Console.WriteLine((decimal) listScores[listScores.Count / 2 + 1]);
-		// Console.WriteLine(listScores[listScores.Count / 2]);
-		return (decimal) listScores[listScores.Count / 2];
+		return listScores[listScores.Count / 2];
 	}
 	
 	static void Main()
@@ -178,9 +172,6 @@ public class Day10
 		string[] inputStrings = File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
 		// string[] inputStrings = File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/practiceInput.txt");
 		
-		// 78897227 is too low.
-		// 2429644500 is also too low.
-		// 2429645000 is too high.
 		// Console.WriteLine(Part1Solution(inputStrings));
 		Console.WriteLine(Part2Solution(inputStrings));
 	}
