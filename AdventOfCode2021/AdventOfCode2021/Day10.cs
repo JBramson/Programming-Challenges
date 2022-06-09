@@ -85,23 +85,103 @@ public class Day10
 					break;
 			}
 		}
+
 		return totalScore;
 	}
 
-	static int Part2Solution(string[] inputStrings)
+	static char FindCorrespondingChar(char c)
 	{
-		return 0;
+		switch (c)
+		{
+			case '(':
+				return ')';
+			case '[':
+				return ']';
+			case '{':
+				return '}';
+			case '<':
+				return '>';
+			default:
+				throw new ArgumentException($"Invalid input: {c}");
+		}
+	}
+
+	static string FindCompletionString(string line)
+	{
+		Stack<char> chars = new Stack<char>();
+		string completionString = "";
+
+		// Create the stack
+		foreach (char c in line)
+		{
+			if (IsOpener(c))
+			{
+				chars.Push(c);
+			}
+			else if (IsMatch(c, chars.Peek()))
+			{
+				chars.Pop();
+			}
+		}
+
+		// Find what's missing from this stack
+		while (chars.Any())
+		{
+			completionString += FindCorrespondingChar(chars.Pop());
+		}
+		return completionString;
+	}
+
+	static decimal Part2Solution(string[] inputStrings)
+	{
+		string completionString;
+		List<float> listScores = new List<float>();
+
+		foreach (string line in inputStrings)
+		{
+			if (FindFirstIncorrectChar(line) == '0')
+			{
+				float totalScore = 0;
+				completionString = FindCompletionString(line);
+				foreach (char c in completionString)
+				{
+					totalScore *= 5;
+					switch (c)
+					{
+						case ')':
+							totalScore += 1;
+							break;
+						case ']':
+							totalScore += 2;
+							break;
+						case '}':
+							totalScore += 3;
+							break;
+						case '>':
+							totalScore += 4;
+							break;
+					}
+				}
+				listScores.Add(totalScore);
+			}
+		}
+		listScores.Sort();
+		Console.WriteLine(listScores.Count);
+		Console.WriteLine((decimal) listScores[listScores.Count / 2 - 1]);
+		Console.WriteLine((decimal) listScores[listScores.Count / 2 + 1]);
+		// Console.WriteLine(listScores[listScores.Count / 2]);
+		return (decimal) listScores[listScores.Count / 2];
 	}
 	
 	static void Main()
 	{
-		string[] inputStrings =
-			File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
-		// string[] inputStrings =
-		// 	File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/practiceInput.txt");
+		string[] inputStrings = File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
+		// string[] inputStrings = File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/practiceInput.txt");
 		
-		
-		Console.WriteLine(Part1Solution(inputStrings));
-		// Console.WriteLine(Part2Solution(inputStrings));
+		// 78897227 is too low.
+		// 2429644500 is also too low.
+		// 2429645000 is too high.
+		// Console.WriteLine(Part1Solution(inputStrings));
+		Console.WriteLine(Part2Solution(inputStrings));
 	}
 }
