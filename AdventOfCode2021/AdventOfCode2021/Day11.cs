@@ -116,11 +116,11 @@ public class Day11
 	static int Part1Solution(string[] inputStrings)
 	{
 		Grid grid = new Grid(inputStrings);
-		grid.StartCharging(2);
-		grid.PrintGrid();
+		// grid.StartCharging(2);
+		// grid.PrintGrid();
 
-		// return grid.StartCharging(10);
-		return 0;
+		return grid.StartCharging(100);
+		// return 0;
 	}
 
 	static int Part2Solution(string[] inputStrings)
@@ -130,8 +130,8 @@ public class Day11
 	
 	static void Main()
 	{
-		// string[] inputStrings = File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
-		string[] inputStrings = File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/practiceInput.txt");
+		string[] inputStrings = File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
+		// string[] inputStrings = File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/practiceInput.txt");
 		
 		Console.WriteLine(Part1Solution(inputStrings));
 		// Console.WriteLine(Part2Solution(inputStrings));
