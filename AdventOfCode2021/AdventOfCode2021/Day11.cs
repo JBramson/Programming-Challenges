@@ -94,16 +94,21 @@ public class Grid
 
 		totalFlashes++;
 		
-		// Some of these have the wrong assignments- flip row and column. ALSO, CHECK DIAGONALS!!!!!!
-		if (row == 0) checkLeft = false;
-		if (row == gridSize - 1) checkRight = false;
-		if (column == 0) checkUp = false;
-		if (column == gridSize - 1) checkDown = false;
+		// We need these checks so that they canbe combined to check the diagonals.
+		if (row == 0) checkUp = false;
+		if (row == gridSize - 1) checkDown = false;
+		if (column == 0) checkLeft = false;
+		if (column == gridSize - 1) checkRight = false;
 		
-		if (row != 0) charges[row - 1, column]++;
-		if (row != gridSize - 1) charges[row + 1, column]++;
-		if (column != 0) charges[row, column - 1]++;
-		if (column != gridSize - 1) charges[row, column + 1]++;		
+		// Ordered as if reading a book (Top-left to to bottom-right).
+		if (checkLeft && checkUp) charges[row - 1, column - 1]++;
+		if (checkUp) charges[row - 1, column]++;
+		if (checkRight && checkUp) charges[row - 1, column + 1]++;
+		if (checkLeft) charges[row, column - 1]++;
+		if (checkRight) charges[row, column + 1]++;
+		if (checkLeft && checkDown) charges[row + 1, column - 1]++;
+		if (checkDown) charges[row + 1, column]++;
+		if (checkRight && checkDown) charges[row + 1, column + 1]++;
 	}
 }
 public class Day11
