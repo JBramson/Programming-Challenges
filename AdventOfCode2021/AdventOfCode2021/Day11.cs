@@ -10,15 +10,15 @@ namespace AdventOfCode2021;
 
 public class Grid
 {
-	const int gridSize = 10;
+	const int GridSize = 10;
 	int totalFlashes = 0;
-	int[,] charges = new int[gridSize, gridSize];
+	int[,] charges = new int[GridSize, GridSize];
 
 	public Grid(string[] lines)
 	{
-		for (int i = 0; i < gridSize; i++)
+		for (int i = 0; i < GridSize; i++)
 		{
-			for (int j = 0; j < gridSize; j++)
+			for (int j = 0; j < GridSize; j++)
 			{
 				charges[i, j] = Convert.ToInt16(lines[i][j]) - '0';
 			}
@@ -27,9 +27,9 @@ public class Grid
 
 	public void PrintGrid()
 	{
-		for (int i = 0; i < gridSize; i++)
+		for (int i = 0; i < GridSize; i++)
 		{
-			for (int j = 0; j < gridSize; j++)
+			for (int j = 0; j < GridSize; j++)
 			{
 				if (charges[i, j] == 0) Console.Write("#");
 				else Console.Write(charges[i, j]);
@@ -48,14 +48,33 @@ public class Grid
 		return totalFlashes;
 	}
 
+	public int FindMassFlashStep()
+	{
+		const int MaxSteps = 1000;
+		int previousTotalFlashes = 0;
+
+		for (int i = 0; i < 1000; i++)
+		{
+			previousTotalFlashes = totalFlashes;
+			Charge();
+
+			if (previousTotalFlashes + 100 == totalFlashes)
+			{
+				return i + 1;
+			}
+		}
+
+		return 0;
+	}
+
 	private void Charge()
 	{
 		bool checksNecessary = false;
 		HashSet<Tuple<int, int>> flashedPoints = new HashSet<Tuple<int, int>>();
 
-		for (int i = 0; i < gridSize; i++)
+		for (int i = 0; i < GridSize; i++)
 		{
-			for (int j = 0; j < gridSize; j++)
+			for (int j = 0; j < GridSize; j++)
 			{
 				charges[i, j] += 1;
 				if (charges[i, j] > 9)
@@ -68,9 +87,9 @@ public class Grid
 		while (checksNecessary)
 		{
 			checksNecessary = false;
-			for (int i = 0; i < gridSize; i++)
+			for (int i = 0; i < GridSize; i++)
 			{
-				for (int j = 0; j < gridSize; j++)
+				for (int j = 0; j < GridSize; j++)
 				{
 					if (charges[i, j] > 9 && !flashedPoints.Contains(new Tuple<int, int>(i, j)))
 					{
@@ -96,9 +115,9 @@ public class Grid
 		
 		// We need these checks so that they canbe combined to check the diagonals.
 		if (row == 0) checkUp = false;
-		if (row == gridSize - 1) checkDown = false;
+		if (row == GridSize - 1) checkDown = false;
 		if (column == 0) checkLeft = false;
-		if (column == gridSize - 1) checkRight = false;
+		if (column == GridSize - 1) checkRight = false;
 		
 		// Ordered as if reading a book (Top-left to to bottom-right).
 		if (checkLeft && checkUp) charges[row - 1, column - 1]++;
@@ -116,24 +135,27 @@ public class Day11
 	static int Part1Solution(string[] inputStrings)
 	{
 		Grid grid = new Grid(inputStrings);
-		// grid.StartCharging(2);
-		// grid.PrintGrid();
 
 		return grid.StartCharging(100);
-		// return 0;
 	}
 
 	static int Part2Solution(string[] inputStrings)
 	{
-		return 0;
+		Grid grid = new Grid(inputStrings);
+
+		return grid.FindMassFlashStep();
 	}
 	
 	static void Main()
 	{
-		string[] inputStrings = File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
-		// string[] inputStrings = File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/practiceInput.txt");
+		const bool OnPart1 = false;
+		const bool InPracticeMode = false;
+		string[] inputStrings;
+
+		if (InPracticeMode) inputStrings = File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/practiceInput.txt");
+		else inputStrings = File.ReadAllLines("/home/jack/Dev/Programming-Challenges/AdventOfCode2021/AdventOfCode2021/input.txt");
 		
-		Console.WriteLine(Part1Solution(inputStrings));
-		// Console.WriteLine(Part2Solution(inputStrings));
+		if (OnPart1) Console.WriteLine(Part1Solution(inputStrings));
+		else Console.WriteLine(Part2Solution(inputStrings));
 	}
 }
