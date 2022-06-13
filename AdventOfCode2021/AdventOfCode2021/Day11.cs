@@ -2,7 +2,7 @@
  * https://adventofcode.com/2021/day/11
  * Objective: Given a grid of ocopti energy levels,
  * Part 1: Track their changing values and flashes.
- * Part 2: 
+ * Part 2: Find how many cycles it takes for all octopi to flash simultaneously.
  * Part of me learning C#.
  */
 
@@ -146,7 +146,7 @@ public class Day11
 		return grid.FindMassFlashStep();
 	}
 	
-	static void Main()
+	static void OldMain()
 	{
 		const bool OnPart1 = false;
 		const bool InPracticeMode = false;
