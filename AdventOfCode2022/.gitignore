@@ -20,4 +20,3 @@ target/
 # End of https://www.toptal.com/developers/gitignore/api/rust
 
 inputs
-src/main.rs

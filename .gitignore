@@ -84,3 +84,5 @@ AdventOfCode2021/AdventOfCode2021/AdventOfCode2021.csproj
 AdventOfCode2021/AdventOfCode2021/bin/input.txt
 AdventOfCode2021/AdventOfCode2021/bin/practiceInput.txt
 
+# Rust Customs
+AdventOfCode2022/src/main.rs
