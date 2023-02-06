@@ -2,7 +2,7 @@
  * https://adventofcode.com/2022/day/1
  * Objective: Given a list of calories carried by elves,
  * Part 1: Find the greatest total of calories carried by an elf.
- * Part 2:
+ * Part 2: Find the total of the three greatest calorie-holders.
  * Part of me learning Rust.
  */
 
