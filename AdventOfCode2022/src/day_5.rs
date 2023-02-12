@@ -18,13 +18,21 @@ pub fn part_1_solution(input_strings: Vec<String>) -> &'static str {
 
     for line in input_strings {
         if line.contains('[') { // Stack lines
-            initial_stacks_lines.push(line);
+            let filtered_line = line.replace(" ", "")
+                .replace("[", "")
+                .replace("]", "");
+            initial_stacks_lines.push(filtered_line);
         } else if line.as_bytes()[1] == '1' as u8 { // Number line
-            let number_of_stacks = line.len() / 4;
+            let number_of_stacks = (line.len() + 1) / 4;
             if (number_of_stacks != MINIMUM_NUMBER_OF_STACKS)
                 && (number_of_stacks != MAXIMUM_NUMBER_OF_STACKS) {
                 panic!("Incorrect stack size generated: number_of_stacks={}", number_of_stacks);
             }
+            // for i in 0..number_of_stacks {
+            //
+            // }
+
+            println!("{:?}", initial_stacks_lines);
             todo!("Populate array vectors accordingly.");
 
         } else if line.as_bytes()[0] == 'm' as u8 { // Movement lines
