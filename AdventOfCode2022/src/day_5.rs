@@ -5,16 +5,21 @@
  * Part 2:
  * Part of me learning Rust.
  */
+// mod helpers;
+use crate::helpers::RunMode;
 
-// The starting stack for the practice input:
+// The base starting stack for the practice input:
 // let mut stacks: [Vec<char>; 3] = [vec!['Z', 'N'], vec!['M', 'C', 'M'], vec!['P']];
 const MINIMUM_NUMBER_OF_STACKS: usize = 3;
 const MAXIMUM_NUMBER_OF_STACKS: usize = 9;
 
-pub fn part_1_solution(input_strings: Vec<String>) -> &'static str {
+pub fn part_1_solution(input_strings: Vec<String>, run_mode: RunMode) -> &'static str {
     let mut final_tops = "";
     let mut initial_stacks_lines: Vec<String> = vec![];
     let mut stacks: Vec<Vec<char>> = vec![vec![]; MAXIMUM_NUMBER_OF_STACKS];
+
+    // TODO: Check the length of the first line to determine how many stacks there are (11 == practice)
+    // TODO: Rework the replacement functions- we need to preserve spacing
 
     for line in input_strings {
         if line.contains('[') { // Stack lines
@@ -43,7 +48,7 @@ pub fn part_1_solution(input_strings: Vec<String>) -> &'static str {
     final_tops
 }
 
-pub fn part_2_solution(input_strings: Vec<String>) -> &'static str {
+pub fn part_2_solution(input_strings: Vec<String>, run_mode: RunMode) -> &'static str {
     let mut final_tops = "";
 
     for line in input_strings {
