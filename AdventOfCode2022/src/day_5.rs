@@ -16,23 +16,23 @@ const MAXIMUM_NUMBER_OF_STACKS: usize = 9;
 pub fn part_1_solution(input_strings: Vec<String>, run_mode: RunMode) -> &'static str {
     let mut final_tops = "";
     let mut initial_stacks_lines: Vec<String> = vec![];
-    let mut stacks: Vec<Vec<char>> = vec![vec![]; MAXIMUM_NUMBER_OF_STACKS];
+    let stack_count = if matches!(run_mode, RunMode::DEBUG) {MINIMUM_NUMBER_OF_STACKS} else {MAXIMUM_NUMBER_OF_STACKS};
+    let mut stacks: Vec<Vec<char>> = vec![vec![]; stack_count];
 
-    // TODO: Check the length of the first line to determine how many stacks there are (11 == practice)
     // TODO: Rework the replacement functions- we need to preserve spacing
 
     for line in input_strings {
         if line.contains('[') { // Stack lines
-            let filtered_line = line.replace(" ", "")
-                .replace("[", "")
-                .replace("]", "");
+            let mut filtered_line: String = String::from("");
+            // Idea: Iterate with a counter through chars in string, deleting all chars that aren't
+            // at an appropriate index (with a value of 1 when modulo 4'd.
+            for i in 0..line.len() {
+                if i % 4 == 1 {
+                    filtered_line.push(line.chars().collect::<Vec<char>>()[i]);
+                }
+            }
             initial_stacks_lines.push(filtered_line);
         } else if line.as_bytes()[1] == '1' as u8 { // Number line
-            let number_of_stacks = (line.len() + 1) / 4;
-            if (number_of_stacks != MINIMUM_NUMBER_OF_STACKS)
-                && (number_of_stacks != MAXIMUM_NUMBER_OF_STACKS) {
-                panic!("Incorrect stack size generated: number_of_stacks={}", number_of_stacks);
-            }
             // for i in 0..number_of_stacks {
             //
             // }
