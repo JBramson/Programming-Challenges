@@ -15,20 +15,16 @@ const MAXIMUM_NUMBER_OF_STACKS: usize = 9;
 
 pub fn part_1_solution(input_strings: Vec<String>, run_mode: RunMode) -> &'static str {
     let mut final_tops = "";
-    let mut initial_stacks_lines: Vec<String> = vec![];
     let stack_count = if matches!(run_mode, RunMode::DEBUG) {MINIMUM_NUMBER_OF_STACKS} else {MAXIMUM_NUMBER_OF_STACKS};
+    let mut initial_stacks_lines: Vec<Vec<char>> = vec![];
     let mut stacks: Vec<Vec<char>> = vec![vec![]; stack_count];
-
-    // TODO: Rework the replacement functions- we need to preserve spacing
 
     for line in input_strings {
         if line.contains('[') { // Stack lines
-            let mut filtered_line: String = String::from("");
-            // Idea: Iterate with a counter through chars in string, deleting all chars that aren't
-            // at an appropriate index (with a value of 1 when modulo 4'd.
+            let mut filtered_line: Vec<char> = vec![' '; stack_count];
             for i in 0..line.len() {
                 if i % 4 == 1 {
-                    filtered_line.push(line.chars().collect::<Vec<char>>()[i]);
+                    filtered_line[i / 4] = line.chars().collect::<Vec<char>>()[i]; // i / 4 yields ints
                 }
             }
             initial_stacks_lines.push(filtered_line);
