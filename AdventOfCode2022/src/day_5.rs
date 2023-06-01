@@ -13,7 +13,7 @@ use crate::helpers::RunMode;
 const MINIMUM_NUMBER_OF_STACKS: usize = 3;
 const MAXIMUM_NUMBER_OF_STACKS: usize = 9;
 
-fn move_top_crates(&mut stacks: Vec<Vec<char>>, quantity: u8, origin_stack: u8, target_stack: u8) -> bool {
+fn move_top_crates(mut stacks: &mut Vec<Vec<char>>, quantity: u8, origin_stack: u8, target_stack: u8) -> bool {
     todo!("Implement moving function");
 
     false
@@ -35,13 +35,24 @@ pub fn part_1_solution(input_strings: Vec<String>, run_mode: RunMode) -> &'stati
             }
             initial_stacks_lines.push(filtered_line);
         } else if line.as_bytes()[1] == '1' as u8 { // Number line
-            // for i in 0..number_of_stacks {
-            //
-            // }
+            // Top loop iterates 0..stack_count to get stack num
+            // For each stack num, top to bottom, adding to the back of the stack (pop later from the front)
+            // Insert the stack
+            for i in 0..stack_count {
+                let mut new_stack: Vec<char> = vec![];
+                let mut next_char: char;
 
-            println!("{:?}", initial_stacks_lines);
-            todo!("Populate array vectors accordingly.");
+                for j in (0..initial_stacks_lines.len()).rev() {
+                    next_char = initial_stacks_lines[j][i];
+                    if next_char == ' ' {
+                        break;
+                    }
+                    new_stack.push(next_char);
+                }
+                stacks.push(new_stack);
+            }
 
+            println!("{:?}", stacks);
         } else if line.as_bytes()[0] == 'm' as u8 { // Movement lines
             todo!("Register and make a move.");
         }
