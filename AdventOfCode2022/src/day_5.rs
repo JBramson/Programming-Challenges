@@ -13,7 +13,7 @@ use crate::helpers::RunMode;
 const MINIMUM_NUMBER_OF_STACKS: usize = 3;
 const MAXIMUM_NUMBER_OF_STACKS: usize = 9;
 
-fn move_top_crates(mut stacks: &mut Vec<Vec<char>>, quantity: u8, origin_stack: u8, target_stack: u8) -> bool {
+fn move_top_crates(stacks: &mut Vec<Vec<char>>, quantity: u8, origin_stack: u8, target_stack: u8) -> bool {
     todo!("Implement moving function");
 
     false
@@ -23,7 +23,7 @@ pub fn part_1_solution(input_strings: Vec<String>, run_mode: RunMode) -> &'stati
     let mut final_tops = "";
     let stack_count = if matches!(run_mode, RunMode::DEBUG) {MINIMUM_NUMBER_OF_STACKS} else {MAXIMUM_NUMBER_OF_STACKS};
     let mut initial_stacks_lines: Vec<Vec<char>> = vec![];
-    let mut stacks: Vec<Vec<char>> = vec![vec![]; stack_count];
+    let mut stacks: Vec<Vec<char>> = vec![];
 
     for line in input_strings {
         if line.contains('[') { // Stack lines
