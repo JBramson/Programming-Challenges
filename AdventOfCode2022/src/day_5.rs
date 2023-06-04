@@ -1,11 +1,10 @@
 /*
- * https://adventofcode.com/2022/day/2
+ * https://adventofcode.com/2022/day/5
  * Objective: Given a stack of crates and a list of moves,
  * Part 1: Perform the moves one-by-one and return the top crates.
  * Part 2: Perform the moves all at once and return the top crates.
  * Part of me learning Rust.
  */
-// mod helpers;
 use crate::helpers::RunMode;
 
 const MINIMUM_NUMBER_OF_STACKS:       usize = 3;
