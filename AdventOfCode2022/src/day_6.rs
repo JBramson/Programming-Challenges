@@ -7,13 +7,23 @@
  */
 use crate::helpers::RunMode;
 
-const SLICE_SIZE: usize = 4;
+const MAX_SLICE_SIZE: usize = 4;
 
 fn find_last_repeated_char_location(string: &str, end_char_location: usize) -> Option<usize> {
-    for offset in 1..SLICE_SIZE { // TODO: This top-level search isn't set in stone
+    for end_offset in 0..MAX_SLICE_SIZE {
         // If we find the current last character in the given slice,
             // Find the location in the slice, and return it.
         // Otherwise, remove the last character and repeat, checking against the new last.
+        for offset in (end_offset + 1)..(MAX_SLICE_SIZE - end_offset) {
+            // println!("end_char_location={end_char_location}, offset={offset}, end_offset={end_offset}");
+            println!("Index {} vs {}", end_char_location - offset, end_char_location - end_offset);
+            println!("Comparing {:?} with {:?}", string.chars().nth(end_char_location - offset), string.chars().nth(end_char_location - end_offset));
+            if string.chars().nth(end_char_location - offset) == string.chars().nth(end_char_location - end_offset) {
+                println!("Hit at {}!", end_char_location - end_offset);
+                return Option::from((end_char_location - end_offset));
+                // TODO: We're very close. We need to find the proper location to return once we've found a hit.
+            }
+        }
 
     }
     // If we can't find any repeats, we've found our answer!
@@ -23,10 +33,11 @@ fn find_last_repeated_char_location(string: &str, end_char_location: usize) -> O
 pub fn part_1_solution(input_strings: Vec<String>, run_mode: RunMode) -> String {
     let master_string: &str = input_strings.last().unwrap();
 
-    let mut i = SLICE_SIZE - 1; // Check from the last character of the slice
+    let mut i = MAX_SLICE_SIZE - 1; // Check from the last character of the slice
     while i < master_string.len() {
+        println!("Checking at ending index={i}");
         match find_last_repeated_char_location(master_string, i) {
-            Some(x) => i = x + (SLICE_SIZE - 1),
+            Some(x) => i = x + (MAX_SLICE_SIZE - 1),
             None => return (i + 1).to_string(),
         }
     }
