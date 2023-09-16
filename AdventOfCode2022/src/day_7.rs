@@ -15,6 +15,16 @@ struct Directory {
     size: i32, // 0 for dirs, non-zero for files
 }
 
+fn assign_children(directories: &HashMap<String, Directory>) {
+    for directory in directories {
+        // Avoid having root list itself
+        // if directory.0 != "/" {
+        //
+        // }
+        println!("{}: parent={}, children={:?}, size={}", directory.0, directory.1.parent, directory.1.children, directory.1.size);
+    }
+}
+
 // TODO: make a function that recursively finds & assigns the size of each dir
 
 pub fn part_1_solution(input_strings: Vec<String>, run_mode: RunMode) -> String {
@@ -29,7 +39,10 @@ pub fn part_1_solution(input_strings: Vec<String>, run_mode: RunMode) -> String 
         if line.chars().nth(0).unwrap() == '$' {
             if &line[2..4] == "cd" {
                 if &line[5..] == ".." {
-                    todo!("Move up 1 dir");
+                    current_dir = match directories.get(&current_dir) {
+                        None => {String::from("Error at {current_dir}- couldn't find dir.")}
+                        Some(parent_dir) => {parent_dir.parent.clone()}
+                    }
                 } else {
                     current_dir = String::from(&line[5..]);
                 }
@@ -37,15 +50,17 @@ pub fn part_1_solution(input_strings: Vec<String>, run_mode: RunMode) -> String 
         } else {
             // Read in dir contents
             if &line[0..3] == "dir" {
-                directories.insert(String::from(&line[3..]),  Directory{parent: current_dir.clone(), children: vec![], size: 0});
+                directories.insert(String::from(&line[4..]),  Directory{parent: current_dir.clone(), children: vec![], size: 0});
             } else {
-                //TODO: Split line input by the space and use the values to add the "dir".
+                let file: Vec<&str> = line.split(' ').collect();
+                directories.insert(String::from(file[1]), Directory{parent: current_dir.clone(), children: vec![], size: file[0].clone().parse().unwrap() });
             }
         }
         println!(" {line}");
     }
 
-    todo!("For each 'dir', add it (the string) to its parent's children vec.");
+    // TODO: For each 'dir', add it (the string) to its parent's children vec.
+    assign_children(&directories);
 
     String::from("Solution in-progress.")
 }
