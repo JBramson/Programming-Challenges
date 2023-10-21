@@ -14,14 +14,23 @@ struct Directory {
     children: Vec<String>,
     size: i32, // 0 for dirs, non-zero for files
 }
+impl Directory {
+    fn add_child(&mut self, child: String) {
+        self.children.push(child);
+    }
+}
 
-fn assign_children(directories: &HashMap<String, Directory>) {
-    for directory in directories {
+fn assign_children(directories: &mut HashMap<String, Directory>) {
+    for mut directory in directories {
         // Avoid having root list itself
-        // if directory.0 != "/" {
-        //
-        // }
-        println!("{}: parent={}, children={:?}, size={}", directory.0, directory.1.parent, directory.1.children, directory.1.size);
+        if directory.0 != "/" {
+            for second_dir in directories {
+                if second_dir.1.parent == *directory.0 {
+                    directory.1.add_child(second_dir.0.clone());
+                }
+            }
+        }
+        // println!("{}: parent={}, children={:?}, size={}", directory.0, directory.1.parent, directory.1.children, directory.1.size);
     }
 }
 
@@ -60,7 +69,7 @@ pub fn part_1_solution(input_strings: Vec<String>, run_mode: RunMode) -> String 
     }
 
     // TODO: For each 'dir', add it (the string) to its parent's children vec.
-    assign_children(&directories);
+    assign_children(&mut directories);
 
     String::from("Solution in-progress.")
 }
