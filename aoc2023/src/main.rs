@@ -1,12 +1,18 @@
 use std::{env, io::Write};
+use std::io::BufRead;
+use std::path::Path;
 use std::fs::File;
 use std::fs::create_dir_all;
 
 use helpers::{RunMode, PuzzlePart};
 
 mod helpers;
+mod day1;
 
-// ./aoc2023 <run_mode=DEPLOYMENT> <puzzle_part=PART_ONE>
+fn get_lines_from_file(filename: impl AsRef<Path>) -> std::io::Result<Vec<String>> {
+    std::io::BufReader::new(File::open(filename)?).lines().collect()
+}
+
 fn main() {
     let mut run_mode = RunMode::DEPLOYMENT;
     let mut puzzle_part = PuzzlePart::PART_ONE;
@@ -21,7 +27,7 @@ fn main() {
             "debug" | "dbg" | "testing" => run_mode = RunMode::DEBUG,
             "1" | "one" => puzzle_part = PuzzlePart::PART_ONE,
             "2" | "two" => puzzle_part = PuzzlePart::PART_TWO,
-            "setup" => {
+            "-s" | "-setup" | "setup" => {
                 create_dir_all("input/").expect("Can't make input/ dir.");
                 let mut file = File::create("input/debug_input.txt").expect("Couldn't create debug_input.txt");
                 file.write_all(b"Put the debug input here!").expect("Couldn't write to debug_input.txt");
@@ -33,5 +39,15 @@ fn main() {
             _ => panic!("I don't understand the \"{arg}\" arg. :("),
         }
     }
+
+    let input_location = match run_mode {
+        RunMode::DEPLOYMENT => "input/deployment_input.txt",
+        RunMode::DEBUG => "input/debug_input.txt",
+    };
+    let input_strings = get_lines_from_file(input_location).expect(
+        "Couldn't extract lines from file. Have you created it yet with the -s flag?");
+    let solution = day1::solve(input_strings, run_mode, puzzle_part);
+
+    println!("Result = {solution:?}");
 
 }
