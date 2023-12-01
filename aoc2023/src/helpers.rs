@@ -10,13 +10,13 @@ use std::path::Path;
 
 
 pub enum RunMode {
-    DEBUG,
-    DEPLOYMENT,
+    Debug,
+    Deployment,
 }
 
 pub enum PuzzlePart {
-    PART_ONE,
-    PART_TWO,
+    PartOne,
+    PartTwo,
 }
 
 pub fn get_lines_from_file(filename: impl AsRef<Path>) -> std::io::Result<Vec<String>> {

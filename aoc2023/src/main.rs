@@ -14,8 +14,8 @@ fn get_lines_from_file(filename: impl AsRef<Path>) -> std::io::Result<Vec<String
 }
 
 fn main() {
-    let mut run_mode = RunMode::DEPLOYMENT;
-    let mut puzzle_part = PuzzlePart::PART_ONE;
+    let mut run_mode = RunMode::Deployment;
+    let mut puzzle_part = PuzzlePart::PartOne;
 
     let mut args = env::args().skip(1);
     if args.len() > 2 {
@@ -23,10 +23,10 @@ fn main() {
     }
     while let Some(arg) = args.next() {
         match &arg[..] {
-            "deployment" | "deploy" | "release" => run_mode = RunMode::DEPLOYMENT,
-            "debug" | "dbg" | "testing" => run_mode = RunMode::DEBUG,
-            "1" | "one" => puzzle_part = PuzzlePart::PART_ONE,
-            "2" | "two" => puzzle_part = PuzzlePart::PART_TWO,
+            "deployment" | "deploy" | "release" => run_mode = RunMode::Deployment,
+            "debug" | "dbg" | "testing" => run_mode = RunMode::Debug,
+            "1" | "one" => puzzle_part = PuzzlePart::PartOne,
+            "2" | "two" => puzzle_part = PuzzlePart::PartTwo,
             "-s" | "-setup" | "setup" => {
                 create_dir_all("input/").expect("Can't make input/ dir.");
                 let mut file = File::create("input/debug_input.txt").expect("Couldn't create debug_input.txt");
@@ -41,8 +41,8 @@ fn main() {
     }
 
     let input_location = match run_mode {
-        RunMode::DEPLOYMENT => "input/deployment_input.txt",
-        RunMode::DEBUG => "input/debug_input.txt",
+        RunMode::Deployment => "input/deployment_input.txt",
+        RunMode::Debug => "input/debug_input.txt",
     };
     let input_strings = get_lines_from_file(input_location).expect(
         "Couldn't extract lines from file. Have you created it yet with the -s flag?");
