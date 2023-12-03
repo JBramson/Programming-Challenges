@@ -7,7 +7,7 @@ use std::fs::create_dir_all;
 use helpers::{RunMode, PuzzlePart};
 
 mod helpers;
-mod day2;
+mod day3;
 
 fn get_lines_from_file(filename: impl AsRef<Path>) -> std::io::Result<Vec<String>> {
     std::io::BufReader::new(File::open(filename)?).lines().collect()
@@ -46,7 +46,7 @@ fn main() {
     };
     let input_strings = get_lines_from_file(input_location).expect(
         "Couldn't extract lines from file. Have you created it yet with the -s flag?");
-    let solution = day2::solve(input_strings, run_mode, puzzle_part);
+    let solution = day3::solve(input_strings, run_mode, puzzle_part);
 
     println!("Result = {solution:?}");
 
