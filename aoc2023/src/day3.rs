@@ -8,35 +8,31 @@
 use crate::helpers::RunMode;
 use crate::helpers::PuzzlePart;
 
-const RADIX: u32 = 10; // Used to convert from char to usize
-
-#[derive(Debug, PartialEq, Copy, Clone)]
-struct Number {
-    val: i32,
-    y: usize,
-    x: usize,
-    size: i32,
-}
-
-#[derive(Debug)]
-struct SybmolPoint {
-    y: usize,
-    x: usize,
-}
-
-fn get_num_size(num: &i32) -> i32 {
-    let mut manipulatable_num = num.clone();
-    let mut size = 1;
-    while manipulatable_num > 9 {
-        size += 1;
-        manipulatable_num /= 10;
+// Numbers appear across a single line- only 1 needs to be checked at a time
+fn find_number_at_x(line: &mut String, x: usize, x_max: usize) -> i32 {
+    let mut value_string = "".to_string();
+    if line.chars().nth(x).unwrap().is_numeric() == false {
+        return 0
+    } else {
+        for x_pos in x..x_max {
+            // Skip extra checks once the number ends
+            if line.chars().nth(x_pos).unwrap().is_numeric() == false {
+                break;
+            }
+            value_string.push(line.chars().nth(x_pos).unwrap());
+            line.replace_range(x_pos..x_pos+1, ".");
+        }
+        for x_pos in (0..x).rev() {
+            // Skip extra checks once the number ends
+            if line.chars().nth(x_pos).unwrap().is_numeric() == false {
+                break;
+            }
+            value_string.insert(0, line.chars().nth(x_pos).unwrap());
+            line.replace_range(x_pos..x_pos+1, ".");
+        }
     }
 
-    size
-}
-
-fn find_number_at_point(numbers: &Vec<Number>, y: usize, x: usize) -> Option<&Number> {
-    Some(numbers.first().unwrap())
+    value_string.parse::<i32>().unwrap()
 }
 
 /**
@@ -54,48 +50,49 @@ pub fn solve_part_1(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32
 
     // Fill out the number and symbol vectors
     for row_num in 0..row_count {
-        let mut current_num = 0;
         let check_up = row_num > 0;
-        let check_down = row_num < row_count;
+        let check_down = row_num < row_count - 1;
         for col_num in 0..col_count {
             let check_left = col_num > 0;
-            let check_right = col_num < col_count;
+            let check_right = col_num < col_count - 1;
             match input_strings[row_num].chars().nth(col_num).unwrap() {
-                '0'..='9' => current_num = current_num * 10 + input_strings[row_num].chars().nth(col_num).unwrap().to_digit(RADIX).unwrap() as i32,
-                '.' => {},
-                symbol => {
-                    // TODO: Stop building a current_num here- instead, when we hit a number, send it and a mutable reference
-                    // TODO: of the line to a function that gets the whole number, setting all digits of the number to be periods,
-                    // TODO: then returning the number to be added into part_sums.
-                    if current_num != 0 {
-                        numbers.push(Number { val: current_num.clone(), y: row_num, x: col_num, size: get_num_size(&current_num)});
-                        current_num = 0;
+                '0'..='9' | '.' => {},
+                _ => {
+                    if check_up {
+                        // Check (y-1, x)
+                        part_sums += find_number_at_x(&mut map[row_num - 1], col_num, col_count);
+                        if check_left {
+                            // Check (y-1, x-1)
+                            part_sums += find_number_at_x(&mut map[row_num - 1], col_num - 1, col_count);
+                        }
+                        if check_right {
+                            // Check (y-1, x+1)
+                            part_sums += find_number_at_x(&mut map[row_num - 1], col_num + 1, col_count);
+                        }
                     }
-                    if symbol != '.' {
-                        symbols.push(SybmolPoint { y: row_num, x: col_num })
+                    if check_down {
+                        // Check (y+1, x)
+                        part_sums += find_number_at_x(&mut map[row_num + 1], col_num, col_count);
+                        if check_left {
+                            // Check (y+1, x-1)
+                            part_sums += find_number_at_x(&mut map[row_num + 1], col_num - 1, col_count);
+                        }
+                        if check_right {
+                            // Check (y+1, x+1)
+                            part_sums += find_number_at_x(&mut map[row_num + 1], col_num + 1, col_count);
+                        }
+                    }
+                    if check_left {
+                        // Check (y, x-1)
+                        part_sums += find_number_at_x(&mut map[row_num], col_num - 1, col_count);
+                    }
+                    if check_right {
+                        // Check (y, x+1)
+                        part_sums += find_number_at_x(&mut map[row_num], col_num + 1, col_count);
                     }
                 }, 
             }
         }
-    }
-
-    for symbol in symbols {
-        let check_left = symbol.x > 0;
-        let check_right = symbol.x < col_count;
-        let check_up = symbol.y > 0;
-        let check_down = symbol.y < row_count;
-        let mut found_numbers: Vec<Number> = vec![];
-
-        if check_left {
-            let found_number = find_number_at_point(&numbers, symbol.y, symbol.x - 1);
-            if let Some(number) = found_number {
-                part_sums += number.val;
-                numbers.retain(|x| number != found_number.unwrap());      
-            }
-        }
-    }
-    for number in numbers {
-        println!("{number:?}");
     }
 
     Ok(part_sums as i32)
