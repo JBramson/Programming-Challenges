@@ -1,6 +1,4 @@
 use std::{env, io::Write};
-use std::io::BufRead;
-use std::path::Path;
 use std::fs::File;
 use std::fs::create_dir_all;
 
@@ -8,10 +6,6 @@ use helpers::{RunMode, PuzzlePart};
 
 mod helpers;
 mod day3;
-
-fn get_lines_from_file(filename: impl AsRef<Path>) -> std::io::Result<Vec<String>> {
-    std::io::BufReader::new(File::open(filename)?).lines().collect()
-}
 
 fn main() {
     let mut run_mode = RunMode::Deployment;
@@ -44,7 +38,7 @@ fn main() {
         RunMode::Deployment => "input/deployment_input.txt",
         RunMode::Debug => "input/debug_input.txt",
     };
-    let input_strings = get_lines_from_file(input_location).expect(
+    let input_strings = helpers::get_lines_from_file(input_location).expect(
         "Couldn't extract lines from file. Have you created it yet with the -s flag?");
     let solution = day3::solve(input_strings, run_mode, puzzle_part);
 
