@@ -5,7 +5,7 @@ use std::fs::create_dir_all;
 use helpers::{RunMode, PuzzlePart};
 
 mod helpers;
-mod day4;
+mod day5;
 
 fn main() {
     let mut run_mode = RunMode::Deployment;
@@ -40,7 +40,7 @@ fn main() {
     };
     let input_strings = helpers::get_lines_from_file(input_location).expect(
         "Couldn't extract lines from file. Have you created it yet with the -s flag?");
-    let solution = day4::solve(input_strings, run_mode, puzzle_part);
+    let solution = day5::solve(input_strings, run_mode, puzzle_part);
 
     println!("Result = {solution:?}");
 
