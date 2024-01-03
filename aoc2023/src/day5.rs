@@ -9,18 +9,16 @@ use crate::helpers::RunMode;
 use crate::helpers::PuzzlePart;
 
 fn get_offset_location(start_loc: u32, destination_range_start: u32, source_range_start: u32, range: u32) -> Option<u32> {
-    if start_loc < source_range_start || start_loc > source_range_start + range {
+    if start_loc < source_range_start || start_loc > source_range_start + range - 1 { // The -1 is required to remove end-range hits
         None
     } else {
         let offset = start_loc - source_range_start;
         Some(destination_range_start + offset)
     }
-    
 }
 
 // Any unmapped sections correspond to their own number
 pub fn solve_part_1(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32, String> {
-    let mut lowest_location = u32::MAX;
     let mut relevant_locations: Vec<u32> = input_strings[0].split(": ").nth(1).unwrap().split(" ").map(|x| x.parse::<u32>().unwrap()).collect();
     let mut new_locations: Vec<u32> = vec![];
     let mut changed_locations: Vec<u32> = vec![];
@@ -30,11 +28,9 @@ pub fn solve_part_1(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32
             continue;
         } else if line.contains(":") {
             relevant_locations.retain(|x| !changed_locations.contains(x));
-            println!("After cut: {relevant_locations:?}");
             relevant_locations.append(&mut new_locations);
             changed_locations.clear();
             new_locations.clear();
-            println!("After add: {relevant_locations:?}");
             continue;
         }
         
@@ -44,7 +40,6 @@ pub fn solve_part_1(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32
                 Some(new_location) => {
                     changed_locations.push(*relevant_location);
                     new_locations.push(new_location);
-                    println!("\t{relevant_location} added {new_location}");
                 },
                 _ => {},
             }
@@ -56,9 +51,8 @@ pub fn solve_part_1(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32
     relevant_locations.append(&mut new_locations);
     changed_locations.clear();
     new_locations.clear();
-    println!("{relevant_locations:?}");
 
-    Ok(lowest_location as i32)
+    Ok(*relevant_locations.iter().min().unwrap() as i32)
 }
 
 pub fn solve_part_2(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32, String> {
