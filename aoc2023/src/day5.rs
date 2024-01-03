@@ -22,18 +22,41 @@ fn get_offset_location(start_loc: u32, destination_range_start: u32, source_rang
 pub fn solve_part_1(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32, String> {
     let mut lowest_location = u32::MAX;
     let mut relevant_locations: Vec<u32> = input_strings[0].split(": ").nth(1).unwrap().split(" ").map(|x| x.parse::<u32>().unwrap()).collect();
-    let mut new_relevant_locations: Vec<u32>;
-    let mut changed_locations: Vec<u32>;
+    let mut new_locations: Vec<u32> = vec![];
+    let mut changed_locations: Vec<u32> = vec![];
 
     for line in &input_strings[3..] {
-        if line.contains(":") {
-            relevant_locations.retain(|&x| !changed_locations.contains(x));
+        if line.is_empty() {
+            continue;
+        } else if line.contains(":") {
+            relevant_locations.retain(|x| !changed_locations.contains(x));
+            println!("After cut: {relevant_locations:?}");
+            relevant_locations.append(&mut new_locations);
+            changed_locations.clear();
+            new_locations.clear();
+            println!("After add: {relevant_locations:?}");
+            continue;
+        }
+        
+        let almanac_entry: Vec<u32> = line.split(" ").map(|x| x.parse::<u32>().unwrap()).collect();
+        for relevant_location in &relevant_locations {
+            match get_offset_location(*relevant_location, almanac_entry[0], almanac_entry[1], almanac_entry[2]) {
+                Some(new_location) => {
+                    changed_locations.push(*relevant_location);
+                    new_locations.push(new_location);
+                    println!("\t{relevant_location} added {new_location}");
+                },
+                _ => {},
+            }
         }
     }
 
-    for relevant_location in relevant_locations {
-        println!("{relevant_location}: {:?}", get_offset_location(relevant_location, 52, 50, 48));
-    }
+    // Run the cleanup stuff afterwards due to lack of ending colon line
+    relevant_locations.retain(|x| !changed_locations.contains(x));
+    relevant_locations.append(&mut new_locations);
+    changed_locations.clear();
+    new_locations.clear();
+    println!("{relevant_locations:?}");
 
     Ok(lowest_location as i32)
 }
