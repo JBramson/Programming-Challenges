@@ -8,14 +8,34 @@
 use crate::helpers::RunMode;
 use crate::helpers::PuzzlePart;
 
+fn get_offset_location(start_loc: u32, destination_range_start: u32, source_range_start: u32, range: u32) -> Option<u32> {
+    if start_loc < source_range_start || start_loc > source_range_start + range {
+        None
+    } else {
+        let offset = start_loc - source_range_start;
+        Some(destination_range_start + offset)
+    }
+    
+}
+
 // Any unmapped sections correspond to their own number
 pub fn solve_part_1(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32, String> {
-    let mut points = 0;
+    let mut lowest_location = u32::MAX;
+    let mut relevant_locations: Vec<u32> = input_strings[0].split(": ").nth(1).unwrap().split(" ").map(|x| x.parse::<u32>().unwrap()).collect();
+    let mut new_relevant_locations: Vec<u32>;
+    let mut changed_locations: Vec<u32>;
 
-    
-    
+    for line in &input_strings[3..] {
+        if line.contains(":") {
+            relevant_locations.retain(|&x| !changed_locations.contains(x));
+        }
+    }
 
-    Ok(points as i32)
+    for relevant_location in relevant_locations {
+        println!("{relevant_location}: {:?}", get_offset_location(relevant_location, 52, 50, 48));
+    }
+
+    Ok(lowest_location as i32)
 }
 
 pub fn solve_part_2(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32, String> {
