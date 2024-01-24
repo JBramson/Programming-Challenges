@@ -1,3 +1,6 @@
+use std::cmp::min;
+use std::cmp::max;
+
 /*
 * https://adventofcode.com/2023/day/5
 * Objective: Given a list of seeds and an almanac of maps detailing ranges linking steps of farming,
@@ -106,9 +109,26 @@ pub fn solve_part_2(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32
         }
         
         let almanac_entry: Vec<u32> = line.split(" ").map(|x| x.parse::<u32>().unwrap()).collect();
-        for relevant_range in &relevant_ranges {
-            if relevant_range.start >= almanac_entry[1] && relevant_range.start <= almanac_entry[1] + almanac_entry[2] - 1 {
+        for mut relevant_range in &relevant_ranges {
+            let old_end = almanac_entry[1] + almanac_entry[2] - 1;
+            if relevant_range.start >= almanac_entry[1] && relevant_range.start <= old_end {
                 println!("Hit detected, starting at {}, in {:?}", relevant_range.start, almanac_entry);
+                let new_start = max(relevant_range.start, almanac_entry[1]);
+                let new_end = min(relevant_range.end, old_end);
+                
+                // Both endpoints are matched- (a, d) -> (x, y)
+                if new_start == relevant_range.start && new_end == old_end {
+                    println!("Moving the entire section.");
+                } else if new_start == relevant_range.start {
+                    // Left endpoint is matched- (a, d) -> (c, d) + create (x, y)
+                    println!("Moving left section.");
+                } else if new_end == old_end {
+                    // Right endpoint is matched- (a, d) -> (a, b) + create (x, y)
+                    println!("Moving right section.");
+                } else {
+                    // Neither endpoint is matched- (a, d) -> (x, y) + create (a, b) and (c, d)
+                    println!("Moving middle section.");
+                }
             }
             
             // match get_offset_location(*relevant_location, almanac_entry[0], almanac_entry[1], almanac_entry[2]) {
