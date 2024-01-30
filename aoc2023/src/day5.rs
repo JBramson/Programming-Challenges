@@ -27,6 +27,16 @@ struct Range {
     end: u32,
 }
 
+impl Range {
+    fn update_start(&mut self, new_start: u32) {
+        self.start = new_start;
+    }
+
+    fn update_end(&mut self, new_end: u32) {
+        self.end = new_end;
+    }
+}
+
 // Any unmapped sections correspond to their own number
 pub fn solve_part_1(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32, String> {
     let mut relevant_locations: Vec<u32> = input_strings[0].split(": ").nth(1).unwrap().split(" ").map(|x| x.parse::<u32>().unwrap()).collect();
@@ -109,24 +119,30 @@ pub fn solve_part_2(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32
         }
         
         let almanac_entry: Vec<u32> = line.split(" ").map(|x| x.parse::<u32>().unwrap()).collect();
-        for mut relevant_range in &relevant_ranges {
+        for i in 0..relevant_ranges.len() {
             let old_end = almanac_entry[1] + almanac_entry[2] - 1;
-            if relevant_range.start >= almanac_entry[1] && relevant_range.start <= old_end {
-                println!("Hit detected, starting at {}, in {:?}", relevant_range.start, almanac_entry);
-                let new_start = max(relevant_range.start, almanac_entry[1]);
-                let new_end = min(relevant_range.end, old_end);
+            if relevant_ranges[i].start >= almanac_entry[1] && relevant_ranges[i].start <= old_end {
+                println!("Hit detected, starting at {}, in {:?}", relevant_ranges[i].start, almanac_entry);
+                let new_start = max(relevant_ranges[i].start, almanac_entry[1]);
+                let new_end = min(relevant_ranges[i].end, old_end);
+                let offset = almanac_entry[1] - almanac_entry[0];
                 
-                // Both endpoints are matched- (a, d) -> (x, y)
-                if new_start == relevant_range.start && new_end == old_end {
+                if new_start == relevant_ranges[i].start && new_end == old_end {
+                    // Both endpoints are matched- (a, d) -> (x, y)
                     println!("Moving the entire section.");
-                } else if new_start == relevant_range.start {
+                    relevant_ranges[i].update_start(new_start);
+                    relevant_ranges[i].update_end(new_end);
+                } else if new_start == relevant_ranges[i].start {
                     // Left endpoint is matched- (a, d) -> (c, d) + create (x, y)
                     println!("Moving left section.");
+                    relevant_ranges[i].update_start(new_start);
+                    // let new_range = Range {start: relevant_ranges[i].start + offset, end: }; // TODO: Figure out the ends
                 } else if new_end == old_end {
                     // Right endpoint is matched- (a, d) -> (a, b) + create (x, y)
                     println!("Moving right section.");
                 } else {
                     // Neither endpoint is matched- (a, d) -> (x, y) + create (a, b) and (c, d)
+                    // @DBG Potential error: if a second match occurs in (a, b) or (c, d) after this hit, it may be missed.
                     println!("Moving middle section.");
                 }
             }
