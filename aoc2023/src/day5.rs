@@ -11,7 +11,7 @@ use std::cmp::max;
 use crate::helpers::RunMode;
 use crate::helpers::PuzzlePart;
 
-fn get_offset_location(start_loc: u32, destination_range_start: u32, source_range_start: u32, range: u32) -> Option<u32> {
+fn get_offset_location(start_loc: i32, destination_range_start: i32, source_range_start: i32, range: i32) -> Option<i32> {
     if start_loc < source_range_start || start_loc > source_range_start + range - 1 { // The -1 is required to remove end-range hits
         None
     } else {
@@ -23,25 +23,25 @@ fn get_offset_location(start_loc: u32, destination_range_start: u32, source_rang
 // Range is inclusive ([start, end])
 #[derive(Debug, PartialEq)]
 struct Range {
-    start: u32,
-    end: u32,
+    start: i32,
+    end: i32,
 }
 
 impl Range {
-    fn update_start(&mut self, new_start: u32) {
+    fn update_start(&mut self, new_start: i32) {
         self.start = new_start;
     }
 
-    fn update_end(&mut self, new_end: u32) {
+    fn update_end(&mut self, new_end: i32) {
         self.end = new_end;
     }
 }
 
 // Any unmapped sections correspond to their own number
 pub fn solve_part_1(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32, String> {
-    let mut relevant_locations: Vec<u32> = input_strings[0].split(": ").nth(1).unwrap().split(" ").map(|x| x.parse::<u32>().unwrap()).collect();
-    let mut new_locations: Vec<u32> = vec![];
-    let mut changed_locations: Vec<u32> = vec![];
+    let mut relevant_locations: Vec<i32> = input_strings[0].split(": ").nth(1).unwrap().split(" ").map(|x| x.parse::<i32>().unwrap()).collect();
+    let mut new_locations: Vec<i32> = vec![];
+    let mut changed_locations: Vec<i32> = vec![];
 
     for line in &input_strings[3..] {
         if line.is_empty() {
@@ -54,7 +54,7 @@ pub fn solve_part_1(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32
             continue;
         }
         
-        let almanac_entry: Vec<u32> = line.split(" ").map(|x| x.parse::<u32>().unwrap()).collect();
+        let almanac_entry: Vec<i32> = line.split(" ").map(|x| x.parse::<i32>().unwrap()).collect();
         for relevant_location in &relevant_locations {
             match get_offset_location(*relevant_location, almanac_entry[0], almanac_entry[1], almanac_entry[2]) {
                 Some(new_location) => {
@@ -76,11 +76,11 @@ pub fn solve_part_1(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32
 }
 
 pub fn solve_part_2(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32, String> {
-    let starting_line: Vec<u32> = input_strings[0].split(": ").nth(1).unwrap().split(" ").map(|x| x.parse::<u32>().unwrap()).collect();
+    let starting_line: Vec<i32> = input_strings[0].split(": ").nth(1).unwrap().split(" ").map(|x| x.parse::<i32>().unwrap()).collect();
 
     let mut relevant_ranges: Vec<Range> = vec![];
-    let mut starts: Vec<u32> = vec![];
-    let mut lengths: Vec<u32> = vec![];
+    let mut starts: Vec<i32> = vec![];
+    let mut lengths: Vec<i32> = vec![];
 
     for (index, value) in starting_line.iter().enumerate() {
         if index % 2 == 0 {
@@ -115,10 +115,11 @@ pub fn solve_part_2(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32
         } else if line.contains(":") {
             relevant_ranges.append(&mut new_ranges);
             new_ranges.clear();
+            println!("\n\n{:?}", relevant_ranges);
             continue;
         }
         
-        let almanac_entry: Vec<u32> = line.split(" ").map(|x| x.parse::<u32>().unwrap()).collect();
+        let almanac_entry: Vec<i32> = line.split(" ").map(|x| x.parse::<i32>().unwrap()).collect();
         for i in 0..relevant_ranges.len() {
             let old_end = almanac_entry[1] + almanac_entry[2] - 1;
             if relevant_ranges[i].start >= almanac_entry[1] && relevant_ranges[i].start <= old_end {
@@ -126,7 +127,7 @@ pub fn solve_part_2(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32
                 let new_start = max(relevant_ranges[i].start, almanac_entry[1]);
                 let new_end = min(relevant_ranges[i].end, old_end);
                 let offset = almanac_entry[1] - almanac_entry[0];
-                
+                // TODO: Update the old values and create new ones with correct values
                 if new_start == relevant_ranges[i].start && new_end == old_end {
                     // Both endpoints are matched- (a, d) -> (x, y)
                     println!("Moving the entire section.");
@@ -136,14 +137,24 @@ pub fn solve_part_2(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32
                     // Left endpoint is matched- (a, d) -> (c, d) + create (x, y)
                     println!("Moving left section.");
                     relevant_ranges[i].update_start(new_start);
-                    // let new_range = Range {start: relevant_ranges[i].start + offset, end: }; // TODO: Figure out the ends
+                    let new_range = Range {start: relevant_ranges[i].start + offset, end: old_end};
+                    new_ranges.push(new_range);
                 } else if new_end == old_end {
                     // Right endpoint is matched- (a, d) -> (a, b) + create (x, y)
                     println!("Moving right section.");
+                    relevant_ranges[i].update_end(new_end);
+                    let new_range = Range {start: relevant_ranges[i].start, end: relevant_ranges[i].end + offset};
+                    new_ranges.push(new_range);
                 } else {
                     // Neither endpoint is matched- (a, d) -> (x, y) + create (a, b) and (c, d)
                     // @DBG Potential error: if a second match occurs in (a, b) or (c, d) after this hit, it may be missed.
                     println!("Moving middle section.");
+                    let new_range_1 = Range {start: relevant_ranges[i].start, end: old_end + offset};
+                    let new_range_2 = Range {start: relevant_ranges[i].start + offset, end: old_end};
+                    relevant_ranges[i].update_start(new_start);
+                    relevant_ranges[i].update_end(new_end);
+                    new_ranges.push(new_range_1);
+                    new_ranges.push(new_range_2);
                 }
             }
             
@@ -156,12 +167,6 @@ pub fn solve_part_2(input_strings: Vec<String>, run_mode: RunMode) -> Result<i32
             // }
         }
     }
-
-    // // Run the cleanup stuff afterwards due to lack of ending colon line
-    // relevant_locations.retain(|x| !changed_locations.contains(x));
-    // relevant_locations.append(&mut new_locations);
-    // changed_locations.clear();
-    // new_locations.clear();
 
     // Ok(*relevant_locations.iter().min().unwrap() as i32)
 
