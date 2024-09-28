@@ -18,7 +18,7 @@ public class Day1 {
         this.inputStrings = inputStrings;
     }
 
-    private int solve_part_1() {
+    private int solvePart1() {
         List<Integer> evens = new ArrayList<Integer>();
         List<Integer> odds = new ArrayList<Integer>();
 
@@ -55,7 +55,7 @@ public class Day1 {
         return -1; // If we get here, something's gone wrong.
     }
 
-    private int solve_part_2() {
+    private int solvePart2() {
         List<Integer> evens = new ArrayList<Integer>();
         List<Integer> odds = new ArrayList<Integer>();
 
@@ -103,6 +103,6 @@ public class Day1 {
     }
 
     public int solve() {
-        return isDayOne ? solve_part_1() : solve_part_2();
+        return isDayOne ? solvePart1() : solvePart2();
     }
 }

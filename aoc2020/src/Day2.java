@@ -17,7 +17,7 @@ public class Day2 {
         this.inputStrings = inputStrings;
     }
 
-    private int solve_part_1() {
+    private int solvePart1() {
         int validPasswordCount = 0;
         for (String line : inputStrings) {
             // Read in information (entry[1] is the password)
@@ -38,7 +38,7 @@ public class Day2 {
         return validPasswordCount;
     }
 
-    private int solve_part_2() {
+    private int solvePart2() {
         int validPasswordCount = 0;
         for (String line : inputStrings) {
             // Read in information (entry[1] is the password)
@@ -58,6 +58,6 @@ public class Day2 {
     }
 
     public int solve() {
-        return isDayOne ? solve_part_1() : solve_part_2();
+        return isDayOne ? solvePart1() : solvePart2();
     }
 }

@@ -17,7 +17,7 @@ public class Day3 {
         this.inputStrings = inputStrings;
     }
 
-    private int solve_part_1() {
+    private int solvePart1() {
         int treeCount = 0, horizontalPosition = 0;
         int lineSize = inputStrings.removeFirst().length(); // We don't need to check the starting position on line 0.
         for (String line : inputStrings) {
@@ -28,13 +28,14 @@ public class Day3 {
         return treeCount;
     }
 
-    private int solve_part_2() {
+
+    private int solvePart2() {
         int treeCount = 0;
 
         return treeCount;
     }
 
     public int solve() {
-        return isDayOne ? solve_part_1() : solve_part_2();
+        return isDayOne ? solvePart1() : solvePart2();
     }
 }
