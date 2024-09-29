@@ -2,7 +2,7 @@
  * https://adventofcode.com/2020/day/3
  * Objective: Given a geological map of trees repeating infinitely to the right,
  * Part 1: Find the number of trees encountered while moving down 1 and right 3.
- * Part 2:
+ * Part 2: Find the number of trees encountered while moving in various patterns.
  */
 import java.util.List;
 
@@ -28,9 +28,28 @@ public class Day3 {
         return treeCount;
     }
 
+    private int getTreeImpacts(final int horizontalJumpSize, final int verticalJumpSize, final int lineSize) {
+        int treeCount = 0, horizontalPosition = 0, currentLine = verticalJumpSize - 1;
+        while (currentLine < inputStrings.size()) {
+            horizontalPosition = (horizontalPosition + horizontalJumpSize) % lineSize;
+            if (inputStrings.get(currentLine).charAt(horizontalPosition) == '#') treeCount++;
+            currentLine += verticalJumpSize; // We keep the vertical jump below for continuity purposes- we still delete the first line to get lineSize.
+        }
+        System.out.println(lineSize);
+
+        return treeCount;
+    }
 
     private int solvePart2() {
         int treeCount = 0;
+        final int lineSize = inputStrings.removeFirst().length(); // We don't need to check the starting position on line 0.
+
+        System.out.println(inputStrings.size());
+        treeCount += getTreeImpacts(1, 1, lineSize);
+        treeCount *= getTreeImpacts(3, 1, lineSize);
+        treeCount *= getTreeImpacts(5, 1, lineSize);
+        treeCount *= getTreeImpacts(7, 1, lineSize);
+        treeCount *= getTreeImpacts(1, 2, lineSize);
 
         return treeCount;
     }
