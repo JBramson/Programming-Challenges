@@ -35,23 +35,23 @@ public class Day3 {
             if (inputStrings.get(currentLine).charAt(horizontalPosition) == '#') treeCount++;
             currentLine += verticalJumpSize; // We keep the vertical jump below for continuity purposes- we still delete the first line to get lineSize.
         }
-        System.out.println(lineSize);
 
         return treeCount;
     }
 
     private int solvePart2() {
-        int treeCount = 0;
+        long treeCount = 0;
         final int lineSize = inputStrings.removeFirst().length(); // We don't need to check the starting position on line 0.
 
-        System.out.println(inputStrings.size());
         treeCount += getTreeImpacts(1, 1, lineSize);
         treeCount *= getTreeImpacts(3, 1, lineSize);
         treeCount *= getTreeImpacts(5, 1, lineSize);
         treeCount *= getTreeImpacts(7, 1, lineSize);
         treeCount *= getTreeImpacts(1, 2, lineSize);
 
-        return treeCount;
+        System.out.println("@FLAG=solution: The answer is [ " + treeCount + " ], since we've passed the INT_MAX.");
+
+        return -1;
     }
 
     public int solve() {
