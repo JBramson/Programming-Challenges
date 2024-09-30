@@ -43,12 +43,13 @@ public class Day4 {
                             if (expirationYear < 2020 || expirationYear > 2030) return false;
                             break;
                         case "hgt":
-                            final int height = Integer.parseInt(passport.get("hgt").substring(0, passport.get("hgt").length() - 3));
+                            final int height = Integer.parseInt(passport.get("hgt").substring(0, passport.get("hgt").length() - 2));
                             if (passport.get("hgt").contains("cm")) {
                                 if (height < 150 || height > 193) return false;
                             } else {
                                 if (height < 59 || height > 76) return false;
                             }
+                            break;
                         case "hcl":
                             final String hairColor = passport.get("hcl");
                             if (hairColor.charAt(0) != '#' || hairColor.length() != 7) return false;
@@ -65,6 +66,7 @@ public class Day4 {
                             final String passportID = passport.get("pid");
                             Integer.parseInt(passportID); // Check if numeric. Can throw NumberFormatException
                             if (passportID.length() != 9) return false;
+                            break;
                     }
                 } catch(NumberFormatException e){
                     return false; // This should happen if someone tries to pass a letter as a number.
