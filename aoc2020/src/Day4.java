@@ -2,7 +2,7 @@
  * https://adventofcode.com/2020/day/4
  * Objective: Given a list of passports,
  * Part 1: Find the number missing no more than the "cid" field.
- * Part 2:
+ * Part 2: Find the number of valid passports (meeting new criteria)
  */
 import java.util.Arrays;
 import java.util.HashMap;
