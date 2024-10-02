@@ -17,6 +17,7 @@ public class Day5 {
         this.inDebugMode = inDebugMode;
         this.isDayOne = isDayOne;
         this.inputStrings = inputStrings;
+//        inputStrings.add(""); // Comment/uncomment this as needed between problems (if we need to end with a blank line)
     }
 
     private int getPosition(final String directions, int lower, int upper) {
@@ -39,7 +40,6 @@ public class Day5 {
         int highestSeatID = 0;
 
         for (String line : inputStrings) {
-            if (line.isEmpty()) break; // Stop once we reach the last line (the blank one)
             final String rowStr = line.substring(0, 7);
             final String colStr = line.substring(7, 10);
 

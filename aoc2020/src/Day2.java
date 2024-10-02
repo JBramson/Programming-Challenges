@@ -15,6 +15,7 @@ public class Day2 {
         this.inDebugMode = inDebugMode;
         this.isDayOne = isDayOne;
         this.inputStrings = inputStrings;
+//        inputStrings.add(""); // Comment/uncomment this as needed between problems (if we need to end with a blank line)
     }
 
     private int solvePart1() {

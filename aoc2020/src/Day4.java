@@ -17,6 +17,7 @@ public class Day4 {
         this.inDebugMode = inDebugMode;
         this.isDayOne = isDayOne;
         this.inputStrings = inputStrings;
+        inputStrings.add(""); // Comment/uncomment this as needed between problems (if we need to end with a blank line)
     }
 
     private boolean isValidPassport(final HashMap<String, String> passport, final String[] requiredFields) {
