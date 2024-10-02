@@ -6,8 +6,8 @@ import java.util.Scanner;
 
 // @FLAG NOTICE: Only the IS_DEBUG, IS_DAY_1, and Day* solution construction line should be edited.
 public class Main {
-    public static final boolean IS_DEBUG = false;
-    public static final boolean IS_DAY_1 = true;
+    public static final boolean IS_DEBUG = true;
+    public static final boolean IS_DAY_1 = false;
 
     public static void main(String[] args) throws IOException {
         String inputFileStr = IS_DEBUG ? "input/debug_input.txt" : "input/deployment_input.txt";
@@ -34,7 +34,7 @@ public class Main {
             inputLines.removeLast();
         }
 
-        Day5 solution = new Day5(IS_DEBUG, IS_DAY_1, inputLines);
+        Day6 solution = new Day6(IS_DEBUG, IS_DAY_1, inputLines);
         System.out.println("Result = " + solution.solve());
     }
 }
