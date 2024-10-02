@@ -69,7 +69,7 @@ public class Day6 {
             }
         }
 
-        return 0;
+        return totalAffirmations;
     }
 
     public int solve() {
