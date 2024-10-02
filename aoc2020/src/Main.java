@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 // @FLAG NOTICE: Only the IS_DEBUG, IS_DAY_1, and Day* solution construction line should be edited.
 public class Main {
-    public static final boolean IS_DEBUG = true;
+    public static final boolean IS_DEBUG = false;
     public static final boolean IS_DAY_1 = true;
 
     public static void main(String[] args) throws IOException {

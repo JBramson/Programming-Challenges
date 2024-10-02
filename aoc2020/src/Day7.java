@@ -5,6 +5,7 @@
  * Part 2: Find the number of
  */
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,13 +47,28 @@ public class Day7 {
                 bagContents.put(bagContentInfo[0].substring(0, bagContentInfo[0].length() - 1), bagContentStrArray);
             }
         }
+
+        // Count the matches
         for (String key: bagContents.keySet()) {
-            System.out.println(key + ": ");
-            for (String containedBag : bagContents.get(key)) {
-                System.out.println("\t" + containedBag);
-            }
+            if (doesStrikeGold(key, bagContents)) goldenPaths++;
         }
         return goldenPaths;
+    }
+
+    private boolean doesStrikeGold(final String targetBag, final HashMap<String, String[]> bagContents) {
+        // Base cases (leaf/gold)
+        if (bagContents.get(targetBag).length == 0) {
+            return false;
+        } else if (Arrays.asList(bagContents.get(targetBag)).contains("shiny gold bag")) {
+            return true;
+        }
+
+        // Recursive case
+        for (String heldBag : bagContents.get(targetBag)) {
+            if (doesStrikeGold(heldBag, bagContents)) return true;
+        }
+
+        return false;
     }
 
     private int solvePart2() {
