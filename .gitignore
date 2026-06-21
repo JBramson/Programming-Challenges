@@ -59,6 +59,7 @@
 # End of https://www.toptal.com/developers/gitignore/api/vscode
 
 input.txt
+input/
 
 # C# Rider files
 # Default ignored files
