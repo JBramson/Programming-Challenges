@@ -1,6 +1,7 @@
 package main
 
 import (
+	"aoc2024/solutions"
 	"fmt"
 	"log"
 	"os"
@@ -57,11 +58,18 @@ func main() {
 		return
 	}
 
-	exampleSolutionInt, err := strconv.Atoi(getInput(ExampleSolution)[0])
+	actualExampleSolution, err := strconv.Atoi(getInput(ExampleSolution)[0])
 	if err != nil {
 		log.Fatal("Couldn't convert example solution to int. err:", err)
 	}
 
-	fmt.Println(exampleSolutionInt)
-
+	// TODO:
+	// Solve example
+	calculatedSolution := solutions.SolveDay1P1(getInput(ExampleInput))
+	if calculatedSolution != actualExampleSolution {
+		log.Fatal("Incorrectly calculated answer as ( ", calculatedSolution, " ) not ( ", actualExampleSolution, " )")
+	}
+	fmt.Println("Successfully solved example. Solving the big one now.")
+	calculatedSolution = solutions.SolveDay1P1(getInput(PuzzleInput))
+	fmt.Println("Solution:", calculatedSolution)
 }
