@@ -1,3 +1,11 @@
+/*
+ * Advent of Code 2024 (aoc2024) is a series of advent calendars that release a pair of programming problems instead of candy each Christmas season. These are my solutions, as part of learning Go.
+ * This main.go file has been designed to require minimal changes when solving different problems. The only necessary changes at the moment are:
+ * -> Changing the functions called towards the bottom (solutions.SolveDayXXPY)
+ * -> Updating the exampleSolution file with the second daily problem's value.
+ * Ideas for general improvement:
+ * -> Add helper functions in a new file to support file working, allowing for the different problem parts to source them seperately.
+ */
 package main
 
 import (
@@ -11,9 +19,9 @@ import (
 
 const (
 	InputDir        = "input/"
-	ExampleInput    = "exampleInput"
-	PuzzleInput     = "puzzleInput"
-	ExampleSolution = "exampleSolution"
+	ExampleInput    = "exampleInput.txt"
+	PuzzleInput     = "puzzleInput.txt"
+	ExampleSolution = "exampleSolution.txt"
 )
 
 var files = [...]string{ExampleInput, PuzzleInput, ExampleSolution}
@@ -48,7 +56,14 @@ func getInput(inputFileStr string) []string {
 		log.Fatal("Couldn't read ", inputFileStr, "err:", err)
 	}
 
-	return strings.Split(string(rawFileContent), "\n")
+	lines := strings.Split(string(rawFileContent), "\n")
+
+	// Trim empty lines at bottom
+	for lines[len(lines)-1] == "" {
+		lines = lines[:len(lines)-1]
+	}
+
+	return lines
 }
 
 func main() {
@@ -63,13 +78,13 @@ func main() {
 		log.Fatal("Couldn't convert example solution to int. err:", err)
 	}
 
-	// TODO:
-	// Solve example
-	calculatedSolution := solutions.SolveDay1P1(getInput(ExampleInput))
+	// Solve Example
+	calculatedSolution := solutions.SolveDay2P1(getInput(ExampleInput)) // @FLAG: Function must be changed
 	if calculatedSolution != actualExampleSolution {
 		log.Fatal("Incorrectly calculated answer as ( ", calculatedSolution, " ) not ( ", actualExampleSolution, " )")
 	}
 	fmt.Println("Successfully solved example. Solving the big one now.")
-	calculatedSolution = solutions.SolveDay1P1(getInput(PuzzleInput))
+	// Solve Puzzle
+	calculatedSolution = solutions.SolveDay2P1(getInput(PuzzleInput)) // @FLAG: Function must be changed
 	fmt.Println("Solution:", calculatedSolution)
 }
