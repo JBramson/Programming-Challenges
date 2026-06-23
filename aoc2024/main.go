@@ -79,12 +79,12 @@ func main() {
 	}
 
 	// Solve Example
-	calculatedSolution := solutions.SolveDay2P1(getInput(ExampleInput)) // @FLAG: Function must be changed
+	calculatedSolution := solutions.SolveDay2P2(getInput(ExampleInput)) // @FLAG: Function must be changed
 	if calculatedSolution != actualExampleSolution {
 		log.Fatal("Incorrectly calculated answer as ( ", calculatedSolution, " ) not ( ", actualExampleSolution, " )")
 	}
 	fmt.Println("Successfully solved example. Solving the big one now.")
 	// Solve Puzzle
-	calculatedSolution = solutions.SolveDay2P1(getInput(PuzzleInput)) // @FLAG: Function must be changed
+	calculatedSolution = solutions.SolveDay2P2(getInput(PuzzleInput)) // @FLAG: Function must be changed
 	fmt.Println("Solution:", calculatedSolution)
 }
