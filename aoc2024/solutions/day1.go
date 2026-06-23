@@ -8,6 +8,7 @@
 package solutions
 
 import (
+	"fmt"
 	"log"
 	"math"
 	"slices"
@@ -15,7 +16,7 @@ import (
 	"strings"
 )
 
-func SolveDay1P1(lines []string) int {
+func solveDay1P1(lines []string) int {
 	const locationSpacing = "   "
 	var firstPositions []int
 	var secondPositions []int
@@ -46,7 +47,7 @@ func SolveDay1P1(lines []string) int {
 
 	return totalDistance
 }
-func SolveDay1P2(lines []string) int {
+func solveDay1P2(lines []string) int {
 	const locationSpacing = "   "
 	var firstPositions []int
 	var secondPositions []int
@@ -85,4 +86,30 @@ func SolveDay1P2(lines []string) int {
 	}
 
 	return totalSimilarityScore
+}
+
+func SolveDay1(exampleLines []string, puzzleLines []string, part int, exampleSolution int) int {
+	var answer int
+
+	// Solve for example
+	if part == 1 {
+		answer = solveDay1P1(exampleLines)
+	} else {
+		answer = solveDay1P2(exampleLines)
+	}
+
+	if answer != exampleSolution {
+		log.Fatalln("Incorrectly calculated answer as ( ", answer, " ) not ( ", exampleSolution, " )")
+	} else {
+		fmt.Println("Successfully solved example. Solving the big one now.")
+	}
+
+	// If the example is correct, solve the puzzle
+	if part == 1 {
+		answer = solveDay1P1(puzzleLines)
+	} else {
+		answer = solveDay1P2(puzzleLines)
+	}
+
+	return answer
 }

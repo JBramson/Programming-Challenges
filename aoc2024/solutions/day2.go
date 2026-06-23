@@ -8,19 +8,12 @@
 package solutions
 
 import (
+	"aoc2024/helpers"
+	"fmt"
+	"log"
 	"math"
-	"strconv"
 	"strings"
 )
-
-// Does what it says on the tin. Useful for getting into math mode.
-func StringSliceToIntSlice(stringSlice []string) []int {
-	intSlice := make([]int, len(stringSlice))
-	for i, s := range stringSlice {
-		intSlice[i], _ = strconv.Atoi(s)
-	}
-	return intSlice
-}
 
 func evaluateReport(levels []int) bool {
 	for i := 0; i < len(levels)-1; i++ {
@@ -43,12 +36,12 @@ func evaluateReport(levels []int) bool {
 	return true
 }
 
-func SolveDay2P1(lines []string) int {
+func solveDay2P1(lines []string) int {
 	safeReportsCount := 0
 
 	for _, line := range lines {
 		levelsStrSlice := strings.Split(line, " ")
-		levels := StringSliceToIntSlice(levelsStrSlice)
+		levels := helpers.StringSliceToIntSlice(levelsStrSlice)
 		if evaluateReport(levels) {
 			safeReportsCount++
 		}
@@ -66,12 +59,12 @@ func removeIndexFromSlice(slice []int, index int) []int {
 }
 
 // TODO: Keep general structure, but create versions with a missing value until successful or the end is reached.
-func SolveDay2P2(lines []string) int {
+func solveDay2P2(lines []string) int {
 	safeReportsCount := 0
 
 	for _, line := range lines {
 		levelsStrSlice := strings.Split(line, " ")
-		levels := StringSliceToIntSlice(levelsStrSlice)
+		levels := helpers.StringSliceToIntSlice(levelsStrSlice)
 		if evaluateReport(levels) {
 			safeReportsCount++
 		} else {
@@ -87,4 +80,30 @@ func SolveDay2P2(lines []string) int {
 	}
 
 	return safeReportsCount
+}
+
+func SolveDay2(exampleLines []string, puzzleLines []string, part int, exampleSolution int) int {
+	var answer int
+
+	// Solve for example
+	if part == 1 {
+		answer = solveDay2P1(exampleLines)
+	} else {
+		answer = solveDay2P2(exampleLines)
+	}
+
+	if answer != exampleSolution {
+		log.Fatalln("Incorrectly calculated answer as ( ", answer, " ) not ( ", exampleSolution, " )")
+	} else {
+		fmt.Println("Successfully solved example. Solving the big one now.")
+	}
+
+	// If the example is correct, solve the puzzle
+	if part == 1 {
+		answer = solveDay2P1(puzzleLines)
+	} else {
+		answer = solveDay2P2(puzzleLines)
+	}
+
+	return answer
 }

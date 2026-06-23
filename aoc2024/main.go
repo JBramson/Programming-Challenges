@@ -1,30 +1,28 @@
 /*
  * Advent of Code 2024 (aoc2024) is a series of advent calendars that release a pair of programming problems instead of candy each Christmas season. These are my solutions, as part of learning Go.
  * This main.go file has been designed to require minimal changes when solving different problems. The only necessary changes at the moment are:
- * -> Changing the functions called towards the bottom (solutions.SolveDayXXPY)
- * -> Updating the exampleSolution file with the second daily problem's value.
- * Ideas for general improvement:
- * -> Add helper functions in a new file to support file working, allowing for the different problem parts to source them seperately.
+ * -> Changing the Solve function called towards the bottom (solutions.SolveDayXX)
  */
 package main
 
 import (
 	"aoc2024/solutions"
+	"flag"
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 	"strings"
 )
 
 const (
-	InputDir        = "input/"
-	ExampleInput    = "exampleInput.txt"
-	PuzzleInput     = "puzzleInput.txt"
-	ExampleSolution = "exampleSolution.txt"
+	InputDir               = "input/"
+	ExampleInput           = "exampleInput.txt"
+	PuzzleInput            = "puzzleInput.txt"
+	DefaultPart            = 1
+	DefaultExampleSolution = -1
 )
 
-var files = [...]string{ExampleInput, PuzzleInput, ExampleSolution}
+var files = [...]string{ExampleInput, PuzzleInput}
 
 // Checks to see if input files are set up. Will attempt to create dir/empty files if they don't exist.
 // Returns true if they're already ready and false if they aren't. Also returns a string of the files dir.
@@ -67,24 +65,24 @@ func getInput(inputFileStr string) []string {
 }
 
 func main() {
+	partPtr := flag.Int("part", DefaultPart, "The part (of the given puzzle) to be solved")
+	exampleSolutionPtr := flag.Int("exampleSolution", DefaultExampleSolution, "The solution to the given part's example")
+	flag.Parse()
+
+	if *partPtr != 1 && *partPtr != 2 {
+		log.Fatalln("ERROR: -part must be 1 or 2, but received (", *partPtr, ")")
+	}
+	if *exampleSolutionPtr == DefaultExampleSolution {
+		log.Fatalln("ERROR: -exampleSolution must be given.")
+	}
+
 	inputsReady, inputDirLocation := handleFileSetup() // Set up files first
 	if !inputsReady {
 		fmt.Println("Blank files have been created at", inputDirLocation)
 		return
 	}
 
-	actualExampleSolution, err := strconv.Atoi(getInput(ExampleSolution)[0])
-	if err != nil {
-		log.Fatal("Couldn't convert example solution to int. err:", err)
-	}
-
 	// Solve Example
-	calculatedSolution := solutions.SolveDay2P2(getInput(ExampleInput)) // @FLAG: Function must be changed
-	if calculatedSolution != actualExampleSolution {
-		log.Fatal("Incorrectly calculated answer as ( ", calculatedSolution, " ) not ( ", actualExampleSolution, " )")
-	}
-	fmt.Println("Successfully solved example. Solving the big one now.")
-	// Solve Puzzle
-	calculatedSolution = solutions.SolveDay2P2(getInput(PuzzleInput)) // @FLAG: Function must be changed
+	calculatedSolution := solutions.SolveDay2(getInput(ExampleInput), getInput(PuzzleInput), *partPtr, *exampleSolutionPtr) // @FLAG: Function must be changed based on the day.
 	fmt.Println("Solution:", calculatedSolution)
 }
