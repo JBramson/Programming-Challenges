@@ -50,15 +50,6 @@ func solveDay2P1(lines []string) int {
 	return safeReportsCount
 }
 
-// Returns a copy of a given slice without the given index.
-func removeIndexFromSlice(slice []int, index int) []int {
-	newSlice := make([]int, len(slice))
-	copy(newSlice, slice)
-	// Doing the slice manipulation messes up the underlyiing pointer of the slice; they shouldn't be re-used, hence the copying above.
-	return append(newSlice[:index], newSlice[index+1:]...)
-}
-
-// TODO: Keep general structure, but create versions with a missing value until successful or the end is reached.
 func solveDay2P2(lines []string) int {
 	safeReportsCount := 0
 
@@ -70,7 +61,7 @@ func solveDay2P2(lines []string) int {
 		} else {
 			for i := range levels {
 				// Cut a single value from report and try again
-				levelsWithCutValue := removeIndexFromSlice(levels, i)
+				levelsWithCutValue := helpers.RemoveIndexFromSlice(levels, i)
 				if evaluateReport(levelsWithCutValue) {
 					safeReportsCount++
 					break

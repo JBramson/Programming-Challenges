@@ -60,7 +60,6 @@ func getInput(inputFileStr string) []string {
 	for lines[len(lines)-1] == "" {
 		lines = lines[:len(lines)-1]
 	}
-
 	return lines
 }
 
@@ -81,8 +80,7 @@ func main() {
 		fmt.Println("Blank files have been created at", inputDirLocation)
 		return
 	}
-
 	// Solve Example
-	calculatedSolution := solutions.SolveDay2(getInput(ExampleInput), getInput(PuzzleInput), *partPtr, *exampleSolutionPtr) // @FLAG: Function must be changed based on the day.
+	calculatedSolution := solutions.SolveDay3(getInput(ExampleInput), getInput(PuzzleInput), *partPtr, *exampleSolutionPtr) // @FLAG: Function must be changed based on the day.
 	fmt.Println("Solution:", calculatedSolution)
 }

@@ -2,7 +2,7 @@
  * https://adventofcode.com/2024/day/1
  * Objective: Given a list of locations (int pairs),
  * Part 1: Find the sum of the differences when each row's differnces are counted up, from lowest to highest.
- * Part 2: find the similarity score betweent he two lists (each number in the first list multiplied by the number of times it appears in the second list). Numbers from the first list can be repeated.
+ * Part 2: Find the similarity score betweent he two lists (each number in the first list multiplied by the number of times it appears in the second list). Numbers from the first list can be repeated.
  * Part of me learning Go.
  */
 package solutions
