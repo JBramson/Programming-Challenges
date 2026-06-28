@@ -2,81 +2,73 @@
  * https://adventofcode.com/2024/day/3
  * Objective: Given a series of jumbled characters containing hidden instructions,
  * Part 1: Find those of the form "mul(X,Y)" and return the sum of the products of the (X,Y) pairs.
- * Part 2:
+ * Part 2: Same as above, but checking for "do()" and "don't()" instructions to start/stop receiving instructions.
  * Part of me learning Go.
  */
 package solutions
 
 import (
-	"aoc2024/helpers"
 	"fmt"
 	"log"
+	"regexp"
 	"strconv"
 	"strings"
-	"unicode"
 )
 
 func solveDay3P1(lines []string) int {
 	productSum := 0
-	mulInstructionStr := "mul(X,Y)"
+	mulRegex, _ := regexp.Compile(`mul\(\d+,\d+\)`)
 
 	for _, line := range lines {
-		nextMulInstructionIndex := 0
-		numbersValid := false
-		var firstNumberStrBuilder strings.Builder
-		var secondNumberStrBuilder strings.Builder
+		// Get multiplcation instructions
+		instructions := mulRegex.FindAllString(line, -1)
 
-		for _, c_rune := range line {
-			c := string(c_rune)
-			// When we're in number mode, we don't iterate as normal.
-			if numbersValid {
-				if unicode.IsDigit(c_rune) {
-					if helpers.GetChar(mulInstructionStr, nextMulInstructionIndex) == "X" {
-						firstNumberStrBuilder.WriteString(c)
-					} else {
-						secondNumberStrBuilder.WriteString(c)
-					}
-				} else if c == "," && firstNumberStrBuilder.Len() != 0 {
-					// Move to the second number
-					nextMulInstructionIndex += 2
-					fmt.Println("First:", firstNumberStrBuilder.String())
-				} else if c == ")" && secondNumberStrBuilder.Len() != 0 {
-					// We're done with the nums
-					fmt.Println("Second:", secondNumberStrBuilder.String())
-					xValue, _ := strconv.Atoi(firstNumberStrBuilder.String())
-					yValue, _ := strconv.Atoi(secondNumberStrBuilder.String())
-					productSum += xValue * yValue
-					fmt.Printf("Added %d*%d=%d to new total of %d.\n", xValue, yValue, xValue*yValue, productSum)
-					// Reset values
-					firstNumberStrBuilder.Reset()
-					secondNumberStrBuilder.Reset()
-					nextMulInstructionIndex = 0
-					numbersValid = false
-				} else {
-					// The closing value is neither a ")" nor a number. Blast'em.
-					// Reset values
-					firstNumberStrBuilder.Reset()
-					secondNumberStrBuilder.Reset()
-					nextMulInstructionIndex = 0
-					numbersValid = false
-				}
-				continue
-			}
-			// For generic, non-number values ( "mul(" )
-			if c == helpers.GetChar(mulInstructionStr, nextMulInstructionIndex) {
-				nextMulInstructionIndex++
-				// If the next valid instruction is an "X" or "Y", we should be hunting numbers.
-				if helpers.GetChar(mulInstructionStr, nextMulInstructionIndex) == "X" || helpers.GetChar(mulInstructionStr, nextMulInstructionIndex) == "Y" {
-					numbersValid = true
-				}
-			}
+		// Do the splitting and multiplying
+		for _, instruction := range instructions {
+			numbers := strings.Split(instruction, ",")
+			firstNumber, _ := strconv.Atoi(numbers[0][4:])
+			secondNumber, _ := strconv.Atoi(numbers[1][:len(numbers[1])-1])
+
+			productSum += firstNumber * secondNumber
 		}
 	}
 
 	return productSum
 }
 func solveDay3P2(lines []string) int {
-	return 0
+	productSum := 0
+	instructionsRegex, _ := regexp.Compile(`mul\(\d+,\d+\)|do\(\)|don't\(\)`)
+	inDoMode := true // We start adding until we receive the first "don't()" instruction, ACROSS INPUT LINES
+	for _, line := range lines {
+		// Get all instructions
+		instructions := instructionsRegex.FindAllString(line, -1)
+		var mulInstructions []string
+
+		// Isolate the multiplication instructions
+		for _, instruction := range instructions {
+			switch instruction {
+			case "do()":
+				inDoMode = true
+			case "don't()":
+				inDoMode = false
+			default:
+				if inDoMode {
+					mulInstructions = append(mulInstructions, instruction)
+				}
+			}
+		}
+
+		// Do the splitting and multiplying
+		for _, instruction := range mulInstructions {
+			numbers := strings.Split(instruction, ",")
+			firstNumber, _ := strconv.Atoi(numbers[0][4:])
+			secondNumber, _ := strconv.Atoi(numbers[1][:len(numbers[1])-1])
+
+			productSum += firstNumber * secondNumber
+		}
+	}
+
+	return productSum
 }
 
 func SolveDay3(exampleLines []string, puzzleLines []string, part int, exampleSolution int) int {
