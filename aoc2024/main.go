@@ -81,6 +81,6 @@ func main() {
 		return
 	}
 	// Solve Example
-	calculatedSolution := solutions.SolveDay3(getInput(ExampleInput), getInput(PuzzleInput), *partPtr, *exampleSolutionPtr) // @FLAG: Function must be changed based on the day.
+	calculatedSolution := solutions.SolveDay4(getInput(ExampleInput), getInput(PuzzleInput), *partPtr, *exampleSolutionPtr) // @FLAG: Function must be changed based on the day.
 	fmt.Println("Solution:", calculatedSolution)
 }
