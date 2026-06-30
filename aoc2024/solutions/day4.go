@@ -12,14 +12,82 @@ import (
 	"log"
 )
 
+/*
+ * Declare array of 8 bools representing directions to check. Positions start at North, rotating 45 degrees clockwise with each entry.
+ * Too high, don't check North (7, 0, 1)
+ * Too low, don't check South (3, 4, 5)
+ * Too left, don't check East (5, 6, 7)
+ * Too right, don't check West (1, 2, 3)
+ */
+func getSearchDirections(tooHigh bool, tooLow bool, tooLeft bool, tooRight bool) []bool {
+	directionChecklist := make([]bool, 8)
+
+	// Default to true and falsify with "tooX" arguments
+	for i := range len(directionChecklist) {
+		directionChecklist[i] = true
+	}
+
+	if tooHigh {
+		directionChecklist[7] = false
+		directionChecklist[0] = false
+		directionChecklist[1] = false
+	} else if tooLow {
+		directionChecklist[3] = false
+		directionChecklist[4] = false
+		directionChecklist[5] = false
+	}
+	if tooLeft {
+		directionChecklist[5] = false
+		directionChecklist[6] = false
+		directionChecklist[7] = false
+	} else if tooRight {
+		directionChecklist[1] = false
+		directionChecklist[2] = false
+		directionChecklist[3] = false
+	}
+
+	return directionChecklist
+}
+
 func solveDay4P1(lines []string) int {
 	totalXmases := 0
 	grid := make([][]rune, len(lines))
 	xmasSlice := []rune{'X', 'M', 'A', 'S'}
-	// Declare array of 8 bools representing directions to check, defaulting to true
-	// Get the grid's width and length, determining the checking limits for each
+	height := len(lines)
+	length := len(lines[0])
+	// Array of 8 bools representing directions to check. Positions start at North, rotating 45 degrees clockwise with each entry.
+	directionChecklist := make([]bool, 8)
 
 	// For each new column, check against the length and determine if we should be checking up/down.
+	for lineNum, line := range lines {
+		// Directions are checked by default and falsified if the range is insufficient.
+		for i := range len(directionChecklist) {
+			directionChecklist[i] = true
+		}
+		tooHigh, tooLow, tooLeft, tooRight := false, false, false, false
+		// Vertical directions are checked once per line.
+		if lineNum-3 < 0 {
+			tooHigh = true
+		} else if lineNum+3 > height {
+			tooLow = true
+		}
+		// fmt.Println(lineNum, line, directionChecklist)
+		for letterNum, letter := range line {
+			if letter != xmasSlice[0] {
+				// Skip non-`X`s.
+				continue
+			}
+			if letterNum-3 < 0 {
+				tooLeft = true
+			} else if letterNum+3 > length {
+				tooRight = true
+			}
+
+			directionChecklist = getSearchDirections(tooHigh, tooLow, tooLeft, tooRight)
+			fmt.Println(lineNum, letterNum, directionChecklist)
+		}
+
+	}
 	// For each new row, check against the width and determine if we should be checking right/left.
 	// Check if we're starting a new "XMAS".
 	// If we are, check every valid direction until we hit a bad value or finish the "XMAS".
@@ -28,8 +96,6 @@ func solveDay4P1(lines []string) int {
 	for i, line := range lines {
 		grid[i] = []rune(line)
 	}
-
-	fmt.Println(grid)
 
 	return totalXmases
 }
