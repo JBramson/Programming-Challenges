@@ -64,7 +64,7 @@ func solveDay4P1(lines []string) int {
 		for i := range len(directionChecklist) {
 			directionChecklist[i] = true
 		}
-		tooHigh, tooLow, tooLeft, tooRight := false, false, false, false
+		tooHigh, tooLow := false, false
 		// Vertical directions are checked once per line.
 		if lineNum-3 < 0 {
 			tooHigh = true
@@ -77,14 +77,14 @@ func solveDay4P1(lines []string) int {
 				// Skip non-`X`s.
 				continue
 			}
+			tooLeft, tooRight := false, false
+			// Horizontal directions are checked once per letter.
 			if letterNum-3 < 0 {
 				tooLeft = true
 			} else if letterNum+3 > length {
 				tooRight = true
 			}
-
 			directionChecklist = getSearchDirections(tooHigh, tooLow, tooLeft, tooRight)
-			fmt.Println(lineNum, letterNum, directionChecklist)
 		}
 
 	}
