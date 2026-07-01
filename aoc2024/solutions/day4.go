@@ -57,6 +57,10 @@ func solveDay4P1(lines []string) int {
 	length := len(lines[0])
 	// Array of 8 bools representing directions to check. Positions start at North, rotating 45 degrees clockwise with each entry.
 	directionChecklist := make([]bool, 8)
+	for lineNum, line := range lines {
+		// Add line to grid (must be done before checks)
+		grid[lineNum] = []rune(line)
+	}
 
 	// For each new column, check against the length and determine if we should be checking up/down.
 	for lineNum, line := range lines {
@@ -68,10 +72,9 @@ func solveDay4P1(lines []string) int {
 		// Vertical directions are checked once per line.
 		if lineNum-3 < 0 {
 			tooHigh = true
-		} else if lineNum+3 > height {
+		} else if lineNum+3 >= height {
 			tooLow = true
 		}
-		// fmt.Println(lineNum, line, directionChecklist)
 		for letterNum, letter := range line {
 			if letter != xmasSlice[0] {
 				// Skip non-`X`s.
@@ -81,20 +84,52 @@ func solveDay4P1(lines []string) int {
 			// Horizontal directions are checked once per letter.
 			if letterNum-3 < 0 {
 				tooLeft = true
-			} else if letterNum+3 > length {
+			} else if letterNum+3 >= length {
 				tooRight = true
 			}
 			directionChecklist = getSearchDirections(tooHigh, tooLow, tooLeft, tooRight)
+
+			for directionNumber, shouldCheck := range directionChecklist {
+				if !shouldCheck {
+					continue
+				}
+				switch directionNumber {
+				case 0: // North
+					if grid[lineNum-1][letterNum] == xmasSlice[1] && grid[lineNum-2][letterNum] == xmasSlice[2] && grid[lineNum-3][letterNum] == xmasSlice[3] {
+						totalXmases++
+					}
+				case 1: // North-East
+					if grid[lineNum-1][letterNum+1] == xmasSlice[1] && grid[lineNum-2][letterNum+2] == xmasSlice[2] && grid[lineNum-3][letterNum+3] == xmasSlice[3] {
+						totalXmases++
+					}
+				case 2: // East
+					if grid[lineNum][letterNum+1] == xmasSlice[1] && grid[lineNum][letterNum+2] == xmasSlice[2] && grid[lineNum][letterNum+3] == xmasSlice[3] {
+						totalXmases++
+					}
+				case 3: //South-East
+					if grid[lineNum+1][letterNum+1] == xmasSlice[1] && grid[lineNum+2][letterNum+2] == xmasSlice[2] && grid[lineNum+3][letterNum+3] == xmasSlice[3] {
+						totalXmases++
+					}
+				case 4: // South
+					if grid[lineNum+1][letterNum] == xmasSlice[1] && grid[lineNum+2][letterNum] == xmasSlice[2] && grid[lineNum+3][letterNum] == xmasSlice[3] {
+						totalXmases++
+					}
+				case 5: // South-West
+					if grid[lineNum+1][letterNum-1] == xmasSlice[1] && grid[lineNum+2][letterNum-2] == xmasSlice[2] && grid[lineNum+3][letterNum-3] == xmasSlice[3] {
+						totalXmases++
+					}
+				case 6: // West
+					if grid[lineNum][letterNum-1] == xmasSlice[1] && grid[lineNum][letterNum-2] == xmasSlice[2] && grid[lineNum][letterNum-3] == xmasSlice[3] {
+						totalXmases++
+					}
+				case 7: // North-West
+					if grid[lineNum-1][letterNum-1] == xmasSlice[1] && grid[lineNum-2][letterNum-2] == xmasSlice[2] && grid[lineNum-3][letterNum-3] == xmasSlice[3] {
+						totalXmases++
+					}
+				}
+			}
 		}
 
-	}
-	// For each new row, check against the width and determine if we should be checking right/left.
-	// Check if we're starting a new "XMAS".
-	// If we are, check every valid direction until we hit a bad value or finish the "XMAS".
-	// Increment for each finish, then continue.
-
-	for i, line := range lines {
-		grid[i] = []rune(line)
 	}
 
 	return totalXmases
