@@ -172,13 +172,13 @@ func solveDay4P2(lines []string) int {
 			// Check forward-slash side of the X.
 			if grid[lineNum-1][letterNum+1] == xmasSlice[0] {
 				// Upper-Right is `M`
-				if grid[lineNum+1][letterNum+1] != xmasSlice[2] {
+				if grid[lineNum+1][letterNum-1] != xmasSlice[2] {
 					// Bottom-right is NOT `S`
 					continue
 				}
 			} else if grid[lineNum-1][letterNum+1] == xmasSlice[2] {
 				// Upper-Right is `S`
-				if grid[lineNum+1][letterNum+1] != xmasSlice[0] {
+				if grid[lineNum+1][letterNum-1] != xmasSlice[0] {
 					// Bottom-right is NOT `M`
 					continue
 				}
@@ -190,13 +190,13 @@ func solveDay4P2(lines []string) int {
 			// Check back-slash side of the X.
 			if grid[lineNum-1][letterNum-1] == xmasSlice[0] {
 				// Upper-Left is `M`
-				if grid[lineNum+1][letterNum-1] != xmasSlice[2] {
+				if grid[lineNum+1][letterNum+1] != xmasSlice[2] {
 					// Bottom-left is NOT `S`
 					continue
 				}
 			} else if grid[lineNum-1][letterNum-1] == xmasSlice[2] {
 				// Upper-Left is `S`
-				if grid[lineNum+1][letterNum-1] != xmasSlice[0] {
+				if grid[lineNum+1][letterNum+1] != xmasSlice[0] {
 					// Bottom-left is NOT `M`
 					continue
 				}
